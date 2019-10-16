@@ -24,6 +24,13 @@ public class Settings {
     public static void setBacteriummIni(double m) {
         Bacterium.setmIni(m);
     }
+    public static void setBacteriumvCons(double v) {
+        Bacterium.setvCons(v);
+    }
+    public static void setBacteriumkConv(double k) {
+        //BETWEEN 0 AND 1
+        Bacterium.setkConv(k);
+    }
     public static void setEnviromnentCellsPerSide(int c) {
         Environment.setCellsPerSide(c);
     }

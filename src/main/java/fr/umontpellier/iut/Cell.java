@@ -15,11 +15,12 @@ public class Cell {
         this.xCell = xCell;
         this.yCell = yCell;
         this.environment = environment;
-        isSemiLiquid = false;
         if (isSubstratum) {
             concentration = cIni;
+            isSemiLiquid = false;
         } else {
-            concentration=0;
+            concentration = 0;
+            isSemiLiquid = true ;
         }
     }
 
@@ -27,13 +28,40 @@ public class Cell {
      * Diffuses the substratum in the neighboring cells once semi liquid
      * (more info : #10 of description.pdf)
      */
-    public void diffuse() {}
+    public void diffuse() {
+        if (isSemiLiquid) {
+            Cell[][] neighbors = environment.getNeighboringCells((xCell + 1) * length, (yCell + 1) * length);
+            //Compute the sum of Dv*Cv-Nv*C
+            double sum = 0;
+            int n = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid) {
+                        sum += neighbors[i][j].getConcentration();
+                        n++;
+                    }
+                }
+            }
+            sum -= n * concentration;
+
+            //Plug the formula of diffusion
+            concentration = concentration + vDiff * environment.getTimeDelta() * Environment.getHalfLength() * Environment.getHalfLength() * sum;
+        }
+    }
 
     /**
      * Lowers the concentration of the cell (because of bacteria)
      * (more info : #9 of description.pdf)
      */
-    public void getBrokenDown() {}
+    public void getBrokenDown(double amount) {
+        //Update concentration
+        concentration = concentration-(amount/(length*length));
+
+        //Update isSemiLiquid
+        if(concentration<=cMin){
+            isSemiLiquid=true;
+        }
+    }
 
     //GETTERS
     public double getConcentration() {
@@ -43,6 +71,9 @@ public class Cell {
         return length;
     }
 
+    public boolean isSemiLiquid() {
+        return isSemiLiquid;
+    }
     //SETTERS
 
 

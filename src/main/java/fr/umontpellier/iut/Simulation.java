@@ -19,5 +19,10 @@ public class Simulation {
     /**
      * Calls tick() of environment every timeDeltaSubdivision and outputs data every timeDelta
      */
-    public void run() {} //Or returns an int which could be the execution code
+    //Or returns an int which could be the execution code
+    public void run(int n) {
+        for (int i = 0; i < n; i++) {
+            environment.tick();
+        }
+    }
 }

@@ -2,39 +2,53 @@ package fr.umontpellier.iut;
 
 public class Settings {
     /**
-     * WE WILL SET THE DIFFERENT PARAMETERS THROUGH THIS CLASS
+     * WE WILL get AND GET THE DIFFERENT PARAMETERS THROUGH THIS CLASS
      * Ex: vDiff or halfLength
      */
+    //GETTERS
 
-    public static void setCellLength(double l) {
-        Cell.setLength(l);
-    }
-    public static void setCellcIni(double c) {
+    public static void setCell_cIni(double c) {
         Cell.setcIni(c);
     }
-    public static void setCellcMin(double c) {
+    public static void setCell_cMin(double c) {
         Cell.setcMin(c);
     }
-    public static void setCellvDiff(double v) {
+    public static void setCell_vDiff(double v) {
         Cell.setvDiff(v);
     }
-    public static void setBacteriumbDiff(double b) {
-        Bacterium.setbDiff(b);
-    }
-    public static void setBacteriummIni(double m) {
-        Bacterium.setmIni(m);
-    }
-    public static void setBacteriumvCons(double v) {
-        Bacterium.setvCons(v);
-    }
-    public static void setBacteriumkConv(double k) {
-        //BETWEEN 0 AND 1
-        Bacterium.setkConv(k);
-    }
-    public static void setEnviromnentCellsPerSide(int c) {
+    public static void setEnvironment_cellsPerSide(int c) {
         Environment.setCellsPerSide(c);
     }
-    public static void setEnviromnentHalfLength(double h) {
+    public static void setEnvironment_halfLength(double h) {
         Environment.setHalfLength(h);
     }
+    public static void setEnvironment_substratumRadius(double r) { Environment.setSubstratumRadius(r); }
+    public static void setBacterium_bDiff(double b) {
+        Bacterium.setbDiff(b);
+    }
+    public static void setBacterium_mIni(double m) {
+        Bacterium.setmIni(m);
+    }
+    public static void setBacterium_vCons(double v) { Bacterium.setvCons(v); }
+    public static void setBacterium_vd(double v) { Bacterium.setVd(v); }
+    public static void setBacterium_kConv(double k) { Bacterium.setkConv(k); /*BETWEEN 0 AND 1*/ }
+    public static void setSimulation_timeDelta(double t) { Simulation.setTimeDelta(t); }
+    public static void setSimulation_timeDeltaSubdivition(int t) { Simulation.setTimeDeltaSubdivision(t); }
+    public static void setSimulation_initialBacteriaAmount(int n) { Simulation.setInitialBacteriaAmount(n); }
+
+    //SETTERS
+    public static double getCell_cIni() { return Cell.getcIni(); }
+    public static double getCell_cMin() { return Cell.getcMin(); }
+    public static double getCell_vDiff() { return Cell.getvDiff(); }
+    public static int getEnvironment_cellsPerSide() { return Environment.getCellsPerSide(); }
+    public static double getEnvironment_halfLength() { return Environment.getHalfLength(); }
+    public static double getEnvironment_substratumRadius() { return Environment.getSubstratumRadius(); }
+    public static double getBacterium_bDiff() { return Bacterium.getbDiff(); }
+    public static double getBacterium_mIni() { return Bacterium.getmIni(); }
+    public static double getBacterium_vCons() { return Bacterium.getvCons(); }
+    public static double getBacterium_vd() { return Bacterium.getVd(); }
+    public static double getBacterium_kConv() { return Bacterium.getkConv(); }
+    public static double getSimulation_timeDelta() { return Simulation.getTimeDelta(); }
+    public static int getSimulation_timeDeltaSubdivition() { return Simulation.getTimeDeltaSubdivision(); }
+    public static int getSimulation_initialBacteriaAmount() { return Simulation.getInitialBacteriaAmount(); }
 }

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Environment {
     private static double halfLength;
     private static int cellsPerSide;
-    private double timeDelta;
-    private double substratumRadius;
+    private static double substratumRadius;
+    private static double timeDelta;
     private Cell[][] cells;
     private ArrayList<Bacterium> bacteria;
 
-    public Environment(double timeDelta, double substratumRadius, int initialBacteriaAmount) {
-        this.timeDelta = timeDelta;
+    public Environment(double timeDelta, int initialBacteriaAmount) {
+        Environment.timeDelta = timeDelta;
         this.substratumRadius = substratumRadius;
         Cell.setLength((halfLength*2)/cellsPerSide);
         //build the cell array
@@ -134,6 +134,14 @@ public class Environment {
         return halfLength;
     }
 
+    public static int getCellsPerSide() {
+        return cellsPerSide;
+    }
+
+    public static double getSubstratumRadius() {
+        return substratumRadius;
+    }
+
     //SETTERS
     public static void setHalfLength(double halfLength) {
         Environment.halfLength = halfLength;
@@ -141,5 +149,9 @@ public class Environment {
 
     public static void setCellsPerSide(int cellsPerSide) {
         Environment.cellsPerSide = cellsPerSide;
+    }
+
+    public static void setSubstratumRadius(double substratumRadius) {
+        Environment.substratumRadius = substratumRadius;
     }
 }

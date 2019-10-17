@@ -36,7 +36,7 @@ public class Cell {
             int n = 0;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid) {
+                    if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid()) {
                         sum += neighbors[i][j].getConcentration();
                         n++;
                     }
@@ -67,15 +67,28 @@ public class Cell {
     public double getConcentration() {
         return concentration;
     }
-    public static double getLength() {
-        return length;
-    }
 
     public boolean isSemiLiquid() {
         return isSemiLiquid;
     }
-    //SETTERS
 
+    public static double getLength() {
+        return length;
+    }
+
+    public static double getcIni() {
+        return cIni;
+    }
+
+    public static double getcMin() {
+        return cMin;
+    }
+
+    public static double getvDiff() {
+        return vDiff;
+    }
+
+    //SETTERS
 
     public static void setcIni(double cIni) {
         Cell.cIni = cIni;

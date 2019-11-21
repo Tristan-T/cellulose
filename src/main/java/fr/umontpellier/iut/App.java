@@ -107,7 +107,7 @@ public class App {
 
             //We have to cast what we get because it returns an object
             Settings.setSimulation_timeDelta((double) simulation.get("timeDelta"));
-            Settings.setSimulation_timeDeltaSubdivition((int) (long) simulation.get("timeDeltaSubdivision"));
+            Settings.setSimulation_timeDeltaSubdivision((int) (long) simulation.get("timeDeltaSubdivision"));
             Settings.setSimulation_initialBacteriaAmount((int) (long) simulation.get("initialBacteriaAmount"));
             Settings.setSimulation_maxDuration((double) simulation.get("maxDuration"));
 

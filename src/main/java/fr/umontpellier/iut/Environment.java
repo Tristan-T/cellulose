@@ -37,7 +37,6 @@ public class Environment {
                 bacty = Math.random() * (halfLength * 2);
             } while(((bactx-halfLength)*(bactx-halfLength)+(bacty-halfLength)*(bacty-halfLength))<=substratumRadius*substratumRadius);
             bacteria.add(new Bacterium(bactx, bacty, this));
-            System.out.println("Created Bacteria at" + bactx + ", " + bacty);
         }
     }
 
@@ -85,9 +84,10 @@ public class Environment {
     public Cell[][] getNeighboringCells(double x, double y) {
         //Convert to cell coordinates (for the table)
         //eg: 1-10 is 0 ; 11-20 is 1, etc... is the cell is 10 wide
-        //USING DEPRECATED CODE => NEED TO REDO
-        int centerCellX = new Double((x-1-(x-1)%Cell.getLength())/Cell.getLength()).intValue();
-        int centerCellY = new Double((y-1-(y-1)%Cell.getLength())/Cell.getLength()).intValue();
+        //System.out.println("getting neighboring cells of point (x,y)= " + x + " " + y);
+        int centerCellX = (int) (x/Cell.getLength());
+        int centerCellY = (int) (y/Cell.getLength());
+        //System.out.println("... of cell (x,y)=" + centerCellX + " " + centerCellY);
         Cell neighbors[][] = new Cell[3][3];
         int ypos = 0;
         //compute the X position of the cells

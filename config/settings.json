@@ -1,1 +1,33 @@
-[{"Simulation":{"timeDelta":50.0,"initialBacteriaAmount":25,"timeDeltaSubdivition":10}},{"Environment":{"halfLength":50.0,"cellsPerSide":10,"substratumRadius":25.0}},{"Cell":{"cMin":5.0,"vDiff":1.0,"cIni":10.0}},{"Bacterium":{"bDiff":1.0,"mIni":10.0,"vCons":1.0,"kConv":1.0,"vd":1.0}}]
+[
+  {
+    "Simulation": {
+      "timeDelta": 0.3,
+      "initialBacteriaAmount": 50,
+      "timeDeltaSubdivition": 60,
+      "maxDuration": 10.0
+    }
+  },
+  {
+    "Environment": {
+      "halfLength": 40.0,
+      "cellsPerSide": 250,
+      "substratumRadius": 25.0
+    }
+  },
+  {
+    "Cell": {
+      "cMin": 0.3,
+      "vDiff": 5.0,
+      "cIni": 0.4
+    }
+  },
+  {
+    "Bacterium": {
+      "bDiff": 1.0,
+      "mIni": 0.4,
+      "vCons": 0.2,
+      "kConv": 0.2,
+      "vd": 0.1
+    }
+  }
+]

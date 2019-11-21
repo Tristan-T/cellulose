@@ -26,6 +26,7 @@ public class App {
 //        Settings.setSimulation_timeDelta(50);
 //        Settings.setSimulation_timeDeltaSubdivition(10);
 //        Settings.setSimulation_initialBacteriaAmount(25);
+//        Settings.setSimulation_maxDuration(500);
 //
 //        exportConfig("settings");
 
@@ -33,7 +34,7 @@ public class App {
 
         Simulation simulation = new Simulation();
         System.out.println(Cell.getLength());
-        simulation.run(500);
+        simulation.run();
     }
 
     public static void exportConfig(String fileName){
@@ -42,6 +43,7 @@ public class App {
         simulationSettings.put("timeDelta", Settings.getSimulation_timeDelta());
         simulationSettings.put("timeDeltaSubdivition", Settings.getSimulation_timeDeltaSubdivition());
         simulationSettings.put("initialBacteriaAmount", Settings.getSimulation_initialBacteriaAmount());
+        simulationSettings.put("maxDuration", Settings.getSimulation_maxDuration());
 
         JSONObject simulation = new JSONObject();
         simulation.put("Simulation", simulationSettings);
@@ -107,6 +109,7 @@ public class App {
             Settings.setSimulation_timeDelta((double) simulation.get("timeDelta"));
             Settings.setSimulation_timeDeltaSubdivition((int) (long) simulation.get("timeDeltaSubdivition"));
             Settings.setSimulation_initialBacteriaAmount((int) (long) simulation.get("initialBacteriaAmount"));
+            Settings.setSimulation_maxDuration((double) simulation.get("maxDuration"));
 
             JSONObject environment = (JSONObject) settings.get(1);
             environment= (JSONObject) environment.get("Environment");

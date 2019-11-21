@@ -4,6 +4,7 @@ public class Simulation {
     private static double timeDelta;
     private static int timeDeltaSubdivision;
     private static int initialBacteriaAmount;
+    private static double maxDuration;
     private Environment environment;
 
     /**
@@ -17,8 +18,14 @@ public class Simulation {
      * Calls tick() of environment every timeDeltaSubdivision and outputs data every timeDelta
      */
     //Or returns an int which could be the execution code
-    public void run(int n) {
-        for (int i = 0; i < n; i++) {
+    public void run() {
+        double lastFrame = maxDuration;
+        while (maxDuration>0) {
+            maxDuration-=timeDelta/timeDeltaSubdivision;
+            //output data (for rendering and stuff every delta time)
+            if (maxDuration<lastFrame-timeDelta){
+                //output data
+            }
             environment.tick();
         }
     }
@@ -37,6 +44,10 @@ public class Simulation {
         return initialBacteriaAmount;
     }
 
+    public static double getMaxDuration() {
+        return maxDuration;
+    }
+
     //SETTERS
 
     public static void setTimeDelta(double timeDelta) {
@@ -49,5 +60,9 @@ public class Simulation {
 
     public static void setInitialBacteriaAmount(int initialBacteriaAmount) {
         Simulation.initialBacteriaAmount = initialBacteriaAmount;
+    }
+
+    public static void setMaxDuration(double simulationMaxDuration) {
+        Simulation.maxDuration = simulationMaxDuration;
     }
 }

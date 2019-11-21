@@ -2,11 +2,10 @@ package fr.umontpellier.iut;
 
 public class Settings {
     /**
-     * WE WILL get AND GET THE DIFFERENT PARAMETERS THROUGH THIS CLASS
-     * Ex: vDiff or halfLength
+     * WE WILL SET AND GET THE DIFFERENT PARAMETERS THROUGH THIS CLASS FOR EASE OF USE
      */
-    //GETTERS
 
+    //GETTERS
     public static void setCell_cIni(double c) {
         Cell.setcIni(c);
     }
@@ -35,6 +34,7 @@ public class Settings {
     public static void setSimulation_timeDelta(double t) { Simulation.setTimeDelta(t); }
     public static void setSimulation_timeDeltaSubdivition(int t) { Simulation.setTimeDeltaSubdivision(t); }
     public static void setSimulation_initialBacteriaAmount(int n) { Simulation.setInitialBacteriaAmount(n); }
+    public static void setSimulation_maxDuration(double t) { Simulation.setMaxDuration(t); }
 
     //SETTERS
     public static double getCell_cIni() { return Cell.getcIni(); }
@@ -51,4 +51,5 @@ public class Settings {
     public static double getSimulation_timeDelta() { return Simulation.getTimeDelta(); }
     public static int getSimulation_timeDeltaSubdivition() { return Simulation.getTimeDeltaSubdivision(); }
     public static int getSimulation_initialBacteriaAmount() { return Simulation.getInitialBacteriaAmount(); }
+    public static double getSimulation_maxDuration() { return Simulation.getMaxDuration(); }
 }

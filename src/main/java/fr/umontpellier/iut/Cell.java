@@ -30,7 +30,7 @@ public class Cell {
      */
     public void diffuse() {
         if (isSemiLiquid) {
-            Cell[][] neighbors = environment.getNeighboringCells((xCell + 1) * length, (yCell + 1) * length);
+            Cell[][] neighbors = environment.getNeighboringCells((xCell) * length, (yCell) * length);
             //Compute the sum of Dv*Cv-Nv*C
             double sum = 0;
             int n = 0;

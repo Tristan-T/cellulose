@@ -3,8 +3,8 @@
     "Simulation": {
       "timeDelta": 0.3,
       "initialBacteriaAmount": 50,
-      "timeDeltaSubdivition": 60,
-      "maxDuration": 10.0
+      "timeDeltaSubdivision": 60,
+      "maxDuration": 100.0
     }
   },
   {

@@ -32,7 +32,7 @@ public class Settings {
     public static void setBacterium_vd(double v) { Bacterium.setVd(v); }
     public static void setBacterium_kConv(double k) { Bacterium.setkConv(k); /*BETWEEN 0 AND 1*/ }
     public static void setSimulation_timeDelta(double t) { Simulation.setTimeDelta(t); }
-    public static void setSimulation_timeDeltaSubdivition(int t) { Simulation.setTimeDeltaSubdivision(t); }
+    public static void setSimulation_timeDeltaSubdivision(int t) { Simulation.setTimeDeltaSubdivision(t); }
     public static void setSimulation_initialBacteriaAmount(int n) { Simulation.setInitialBacteriaAmount(n); }
     public static void setSimulation_maxDuration(double t) { Simulation.setMaxDuration(t); }
 
@@ -49,7 +49,7 @@ public class Settings {
     public static double getBacterium_vd() { return Bacterium.getVd(); }
     public static double getBacterium_kConv() { return Bacterium.getkConv(); }
     public static double getSimulation_timeDelta() { return Simulation.getTimeDelta(); }
-    public static int getSimulation_timeDeltaSubdivition() { return Simulation.getTimeDeltaSubdivision(); }
+    public static int getSimulation_timeDeltaSubdivision() { return Simulation.getTimeDeltaSubdivision(); }
     public static int getSimulation_initialBacteriaAmount() { return Simulation.getInitialBacteriaAmount(); }
     public static double getSimulation_maxDuration() { return Simulation.getMaxDuration(); }
 }

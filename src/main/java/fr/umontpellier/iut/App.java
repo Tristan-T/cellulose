@@ -24,7 +24,7 @@ public class App {
 //        Settings.setEnvironment_halfLength(50);
 //        Settings.setEnvironment_substratumRadius(25);
 //        Settings.setSimulation_timeDelta(50);
-//        Settings.setSimulation_timeDeltaSubdivition(10);
+//        Settings.setSimulation_timeDeltaSubdivision(10);
 //        Settings.setSimulation_initialBacteriaAmount(25);
 //        Settings.setSimulation_maxDuration(500);
 //
@@ -41,7 +41,7 @@ public class App {
         //Create the various JSON objects and fill them with appropriate values
         JSONObject simulationSettings = new JSONObject();
         simulationSettings.put("timeDelta", Settings.getSimulation_timeDelta());
-        simulationSettings.put("timeDeltaSubdivition", Settings.getSimulation_timeDeltaSubdivition());
+        simulationSettings.put("timeDeltaSubdivision", Settings.getSimulation_timeDeltaSubdivition());
         simulationSettings.put("initialBacteriaAmount", Settings.getSimulation_initialBacteriaAmount());
         simulationSettings.put("maxDuration", Settings.getSimulation_maxDuration());
 
@@ -107,7 +107,7 @@ public class App {
 
             //We have to cast what we get because it returns an object
             Settings.setSimulation_timeDelta((double) simulation.get("timeDelta"));
-            Settings.setSimulation_timeDeltaSubdivition((int) (long) simulation.get("timeDeltaSubdivition"));
+            Settings.setSimulation_timeDeltaSubdivition((int) (long) simulation.get("timeDeltaSubdivision"));
             Settings.setSimulation_initialBacteriaAmount((int) (long) simulation.get("initialBacteriaAmount"));
             Settings.setSimulation_maxDuration((double) simulation.get("maxDuration"));
 

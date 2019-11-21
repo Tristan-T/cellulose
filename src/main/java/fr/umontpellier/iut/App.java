@@ -41,7 +41,7 @@ public class App {
         //Create the various JSON objects and fill them with appropriate values
         JSONObject simulationSettings = new JSONObject();
         simulationSettings.put("timeDelta", Settings.getSimulation_timeDelta());
-        simulationSettings.put("timeDeltaSubdivision", Settings.getSimulation_timeDeltaSubdivition());
+        simulationSettings.put("timeDeltaSubdivision", Settings.getSimulation_timeDeltaSubdivision());
         simulationSettings.put("initialBacteriaAmount", Settings.getSimulation_initialBacteriaAmount());
         simulationSettings.put("maxDuration", Settings.getSimulation_maxDuration());
 

@@ -9,8 +9,8 @@
         <module name="cellulose" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="cellulose" target="1.8" />
+    <bytecodeTargetLevel target="11">
+      <module name="cellulose" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

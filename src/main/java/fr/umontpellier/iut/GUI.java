@@ -1,7 +1,10 @@
 package fr.umontpellier.iut;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.io.InputStream;
 
 // During dev
 // For Linux : install openjfx package (by default with OpenJDK)
@@ -14,13 +17,20 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        //Setting title
         primaryStage.setTitle("Laboratoire Virtuel - IUT Montpellier");
+
+        //Custom icon
+        InputStream iconStream = getClass().getResourceAsStream("/icon.png");
+        Image image = new Image(iconStream);
+        primaryStage.getIcons().add(image);
 
         primaryStage.show();
     }
 
     public static void main() {
+        //Starting the GUI through main, allow for parameters to pass
         Application.launch();
     }
 }

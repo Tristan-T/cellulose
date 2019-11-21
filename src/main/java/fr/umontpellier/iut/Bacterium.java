@@ -5,7 +5,6 @@ public class Bacterium {
     private static double bDiff;
     private static double vCons;
     private static double kConv;
-    private static double vd;
     private double x;
     private double y;
     private double mass;
@@ -28,34 +27,24 @@ public class Bacterium {
         neighboringCells=environment.getNeighboringCells(x, y);
         //VX=vd(Co-Ce)/2H
         //X(t+delta)=Xt + deltaVX + Bdiff * sqrt(delta) * rand();
-        //System.out.println("moving from " + x + " " + y + "...");
-        double vx = vd*((computeConcentrationInDirection("west")-computeConcentrationInDirection("east")))/(2*Cell.getLength());
+        double vx = ((computeConcentrationInDirection("west")-computeConcentrationInDirection("east")))/(2*Cell.getLength());
         x = x + (environment.getTimeDelta()*vx) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
         if(x<0){
-            //if x is negative then wrap its position around the "environment"
-            //to prenvent the case where x is way too small (less than minus the width of the environment,
-            //because of wrong speed parameter for example), we have to use a modulo
-            x=Environment.getHalfLength()*2-Math.abs(x%Environment.getHalfLength()*2);
-        }else if(x>=Environment.getHalfLength()*2){
-            //if x is too large then wrap its position around the "environment"
-            x=x%(Environment.getHalfLength()*2);
+            x=Environment.getHalfLength()*2-x;
+        }else if(x>Environment.getHalfLength()*2){
+            x=x-Environment.getHalfLength()*2;
         }
-
 
         //VY=vd(Co-Ce)/2H
         //Y(t+delta)=Yt + deltaVY + Bdiff * sqrt(delta) * rand();
-        double vy =vd*((computeConcentrationInDirection("south")-computeConcentrationInDirection("north")))/(2*Cell.getLength());
+        double vy = ((computeConcentrationInDirection("south")-computeConcentrationInDirection("north")))/(2*Cell.getLength());
         y = y + (environment.getTimeDelta()*vy) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
         if(y<0){
-            //if y is negative then wrap its position around the "environment"
-            //to prenvent the case where x is way too small (less than minus the height of the environment,
-            //because of wrong speed parameter for example), we have to use a modulo
-            y=Environment.getHalfLength()*2-Math.abs(y%Environment.getHalfLength()*2);
-        }else if(y>=Environment.getHalfLength()*2){
-            //if y is too large then wrap its position around the "environment"
-            y=y%(Environment.getHalfLength()*2);
+            y=Environment.getHalfLength()*2-y;
+        }else if(y>Environment.getHalfLength()*2){
+            y=y-Environment.getHalfLength()*2;
         }
-        //System.out.println("...to " + x + " " + y);
+
     }
 
     /**
@@ -112,27 +101,6 @@ public class Bacterium {
         }
     }
 
-    //GETTERS
-    public static double getmIni() {
-        return mIni;
-    }
-
-    public static double getbDiff() {
-        return bDiff;
-    }
-
-    public static double getvCons() {
-        return vCons;
-    }
-
-    public static double getkConv() {
-        return kConv;
-    }
-
-    public static double getVd() {
-        return vd;
-    }
-
     //SETTERS
     public static void setmIni(double mIni) {
         Bacterium.mIni = mIni;
@@ -148,10 +116,6 @@ public class Bacterium {
 
     public static void setkConv(double kConv) {
         Bacterium.kConv = kConv;
-    }
-
-    public static void setVd(double vd) {
-        Bacterium.vd = vd;
     }
 
     @Override

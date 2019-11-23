@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Environment {
     private static double halfLength;
     private static int cellsPerSide;
-    private double timeDelta;
-    private double substratumRadius;
+    private static double substratumRadius;
+    private static double timeDelta;
     private Cell[][] cells;
     private ArrayList<Bacterium> bacteria;
 
-    public Environment(double timeDelta, double substratumRadius, int initialBacteriaAmount) {
-        this.timeDelta = timeDelta;
+    public Environment(double timeDelta, int initialBacteriaAmount) {
+        Environment.timeDelta = timeDelta;
         this.substratumRadius = substratumRadius;
         Cell.setLength((halfLength*2)/cellsPerSide);
         //build the cell array
@@ -94,15 +94,15 @@ public class Environment {
         int x1 = centerCellX-1;
         if (x1<0) {
             x1=cellsPerSide-1;
-            } else if (x1>cellsPerSide-1) {
-                    x1=0;
-                }
+        } else if (x1>cellsPerSide-1) {
+            x1=0;
+        }
         int x2 = centerCellX+1;
         if (x2<0) {
             x2=cellsPerSide-1;
-            } else if (x2>cellsPerSide-1) {
-                    x2=0;
-                }
+        } else if (x2>cellsPerSide-1) {
+            x2=0;
+        }
 
         //populate the returning table
         for (int i = 0; i < 3; i++) {
@@ -134,6 +134,14 @@ public class Environment {
         return halfLength;
     }
 
+    public static int getCellsPerSide() {
+        return cellsPerSide;
+    }
+
+    public static double getSubstratumRadius() {
+        return substratumRadius;
+    }
+
     //SETTERS
     public static void setHalfLength(double halfLength) {
         Environment.halfLength = halfLength;
@@ -141,5 +149,9 @@ public class Environment {
 
     public static void setCellsPerSide(int cellsPerSide) {
         Environment.cellsPerSide = cellsPerSide;
+    }
+
+    public static void setSubstratumRadius(double substratumRadius) {
+        Environment.substratumRadius = substratumRadius;
     }
 }

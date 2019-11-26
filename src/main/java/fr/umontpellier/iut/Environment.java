@@ -125,6 +125,15 @@ public class Environment {
         return neighbors;
     }
 
+    // return the sum of the bacteria mass
+    public double sumMass(){
+        double sum = 0;
+        for (Bacterium b: bacteria) {
+            sum = sum + b.getMass();
+        }
+        return sum;
+    }
+
     //GETTERS
     public double getTimeDelta() {
         return timeDelta;

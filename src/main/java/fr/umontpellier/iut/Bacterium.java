@@ -133,6 +133,10 @@ public class Bacterium {
         return vd;
     }
 
+    public double getMass() {
+        return mass;
+    }
+
     //SETTERS
     public static void setmIni(double mIni) {
         Bacterium.mIni = mIni;

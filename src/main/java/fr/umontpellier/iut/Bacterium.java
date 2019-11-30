@@ -33,7 +33,7 @@ public class Bacterium {
         x = x + (environment.getTimeDelta()*vx) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
         if(x<0){
             //if x is negative then wrap its position around the "environment"
-            //to prenvent the case where x is way too small (less than minus the width of the environment,
+            //to prevent the case where x is way too small (less than minus the width of the environment,
             //because of wrong speed parameter for example), we have to use a modulo
             x=Environment.getHalfLength()*2-Math.abs(x%Environment.getHalfLength()*2);
         }else if(x>=Environment.getHalfLength()*2){
@@ -48,7 +48,7 @@ public class Bacterium {
         y = y + (environment.getTimeDelta()*vy) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
         if(y<0){
             //if y is negative then wrap its position around the "environment"
-            //to prenvent the case where x is way too small (less than minus the height of the environment,
+            //to prevent the case where x is way too small (less than minus the height of the environment,
             //because of wrong speed parameter for example), we have to use a modulo
             y=Environment.getHalfLength()*2-Math.abs(y%Environment.getHalfLength()*2);
         }else if(y>=Environment.getHalfLength()*2){
@@ -110,6 +110,14 @@ public class Bacterium {
         } else {
             return null;
         }
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     //GETTERS

@@ -8,10 +8,10 @@ public class Simulation {
     private Environment environment;
 
     /**
-     * timeDelta must be a multiple of timeDeltaSubdivision =>
+     * Initializes an environment with the correct time settings
      */
     public Simulation() {
-        this.environment = new Environment(timeDeltaSubdivision, initialBacteriaAmount);
+        this.environment = new Environment(timeDelta/timeDeltaSubdivision, initialBacteriaAmount);
     }
 
     /**

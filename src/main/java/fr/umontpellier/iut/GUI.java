@@ -72,6 +72,7 @@ public class GUI extends Application {
     private static void celluloseModel(Scene scene) {
 
     }
+
     @Override
     public void start(Stage stage) throws Exception {
         //Setting title

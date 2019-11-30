@@ -12,7 +12,6 @@ public class Environment {
 
     public Environment(double timeDelta, int initialBacteriaAmount) {
         Environment.timeDelta = timeDelta;
-        this.substratumRadius = substratumRadius;
         Cell.setLength((halfLength*2)/cellsPerSide);
         //build the cell array
         //to determine if the cell should have a concentration(aka instantiate it with isSubstratum=true),
@@ -41,7 +40,7 @@ public class Environment {
     }
 
     /**
-     * Runs the main algorithm for one tick (=timeDelta, the smaller unit of time defined in the simulation)
+     * Runs the main algorithm for one tick (=timeDelta/timeDeltaSubdivision, the smaller unit of time defined in the simulation)
      * (more info : 4/ of description.pdf)*/
 
     public void tick() {
@@ -84,10 +83,10 @@ public class Environment {
     public Cell[][] getNeighboringCells(double x, double y) {
         //Convert to cell coordinates (for the table)
         //eg: 1-10 is 0 ; 11-20 is 1, etc... is the cell is 10 wide
-        //System.out.println("getting neighboring cells of point (x,y)= " + x + " " + y);
+        System.out.println("getting neighboring cells of point (x,y)= " + x + " " + y);
         int centerCellX = (int) (x/Cell.getLength());
         int centerCellY = (int) (y/Cell.getLength());
-        //System.out.println("... of cell (x,y)=" + centerCellX + " " + centerCellY);
+        System.out.println("... of cell (x,y)=" + centerCellX + " " + centerCellY);
         Cell neighbors[][] = new Cell[3][3];
         int ypos = 0;
         //compute the X position of the cells
@@ -125,11 +124,37 @@ public class Environment {
         return neighbors;
     }
 
-    // return the sum of the bacteria mass
-    public double sumMass(){
+    //returns the sum of the mass of the bacteria
+    public double getBiomass(){
         double sum = 0;
         for (Bacterium b: bacteria) {
             sum = sum + b.getMass();
+        }
+        return sum;
+    }
+
+    public double[][] getBacteriaData(){
+        double sum = 0;
+        double[][] position = new double[bacteria.size()+1][2];
+        int i = 0;
+        for (Bacterium b: bacteria) {
+            position[i][0] = b.getX();
+            position[i][1] = b.getY();
+            sum = sum + b.getMass();
+            i++;
+        }
+        position[i][0] = sum;
+        position[i][1] = 0;
+
+        return position;
+    }
+
+    public double getCellData(){
+        double sum = 0;
+        for (Cell[] ctab: cells) {
+            for (Cell c: ctab) {
+                sum = sum + c.getConcentration();
+            }
         }
         return sum;
     }

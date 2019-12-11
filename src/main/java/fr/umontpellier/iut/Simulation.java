@@ -22,13 +22,18 @@ public class Simulation {
         double lastFrame = maxDuration;
         while (maxDuration>0) {
             maxDuration-=timeDelta/timeDeltaSubdivision;
+            //System.out.println(maxDuration);
             //output data (for rendering and stuff every delta time)
             if (maxDuration<lastFrame-timeDelta){
                 //output data
-            }
+                lastFrame=maxDuration;
+                //double[][] data = environment.getCellData();
+                //System.out.println(Arrays.deepToString(data).replace("], ", "]\n"));
+                }
+                //System.out.println(data[data.length-1][0]);
             environment.tick();
         }
-    }
+        }
 
     //GETTERS
 

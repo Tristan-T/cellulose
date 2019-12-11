@@ -31,7 +31,7 @@ public class Cell {
     public void diffuse() {
         if (isSemiLiquid) {
             Cell[][] neighbors = environment.getNeighboringCells((xCell) * length, (yCell) * length);
-            //Compute the sum of Dv*Cv-Nv*C
+            //Compute the sum of Dv*Cv-Nv*C over the 4 directly adjacent cells
             double sum = 0;
             int n = 0;
             for (int i = 0; i < 3; i++) {
@@ -42,10 +42,31 @@ public class Cell {
                     }
                 }
             }
-            sum -= n * concentration;
+            //At this point, sum has the sum of the concentrations of the valid cells, aka the the first part (Dv*Cv)
+            //because Dv = 1 if the cell is valid (isSemiLiquid), else Dv = 0
+            //Now subtract 4 times concentration*nb valid cells
+            sum -= (n * concentration)*4;
 
-            //Plug the formula of diffusion
-            concentration = concentration + vDiff * environment.getTimeDelta() * Environment.getHalfLength() * Environment.getHalfLength() * sum;
+            //Now sum has the total amount of concentration gained.
+            sum = vDiff * environment.getTimeDelta() * length * length * sum;
+
+            //The gained concentration is evenly subtracted from the "donor" cells
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid()) {
+                        neighbors[i][j].setConcentration(neighbors[i][j].getConcentration()-sum/n);
+                    }
+                }
+            }
+
+            //Update the concentration
+            System.out.println("old concentration: " + concentration);
+            System.out.println("sum: " + sum);
+            concentration = concentration + sum;
+            System.out.println("new concentration: " + concentration);
+            if(Double.isNaN(concentration)||Double.isInfinite(concentration)) {
+                System.exit(0);
+            }
         }
     }
 
@@ -89,6 +110,11 @@ public class Cell {
     }
 
     //SETTERS
+
+
+    public void setConcentration(double concentration) {
+        this.concentration = concentration;
+    }
 
     public static void setcIni(double cIni) {
         Cell.cIni = cIni;

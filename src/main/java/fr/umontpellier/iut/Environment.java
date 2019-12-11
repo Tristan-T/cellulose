@@ -44,21 +44,21 @@ public class Environment {
      * (more info : 4/ of description.pdf)*/
 
     public void tick() {
-        System.out.println("diffusing");
+        //System.out.println("diffusing");
         for (Cell[] ctab: cells) {
             for (Cell cell: ctab) {
                 cell.diffuse();
             }
         }
-        System.out.println("moving");
+        //System.out.println("moving");
         for (Bacterium b: bacteria) {
             b.move();
         }
-        System.out.println("eating");
+        //System.out.println("eating");
         for (Bacterium b: bacteria) {
             b.eat();
         }
-        System.out.println("dividing");
+        //System.out.println("dividing");
 
         //We create a temporary ArrayList in order to avoid modifying the one we are iterating on.
         Bacterium dividedBacterium;
@@ -83,10 +83,10 @@ public class Environment {
     public Cell[][] getNeighboringCells(double x, double y) {
         //Convert to cell coordinates (for the table)
         //eg: 1-10 is 0 ; 11-20 is 1, etc... is the cell is 10 wide
-        System.out.println("getting neighboring cells of point (x,y)= " + x + " " + y);
-        int centerCellX = (int) (x/Cell.getLength());
-        int centerCellY = (int) (y/Cell.getLength());
-        System.out.println("... of cell (x,y)=" + centerCellX + " " + centerCellY);
+        //System.out.println("getting neighboring cells of point (x,y)= " + x + " " + y);
+        int centerCellX = ((int) (x/Cell.getLength()))%cellsPerSide;
+        int centerCellY = ((int) (y/Cell.getLength()))%cellsPerSide;
+        //System.out.println("... of cell (x,y)=" + centerCellX + " " + centerCellY);
         Cell neighbors[][] = new Cell[3][3];
         int ypos = 0;
         //compute the X position of the cells
@@ -135,11 +135,12 @@ public class Environment {
 
     public double[][] getBacteriaData(){
         double sum = 0;
-        double[][] position = new double[bacteria.size()+1][2];
+        double[][] position = new double[bacteria.size()+1][3];
         int i = 0;
         for (Bacterium b: bacteria) {
             position[i][0] = b.getX();
             position[i][1] = b.getY();
+            position[i][2] = b.getMass();
             sum = sum + b.getMass();
             i++;
         }
@@ -149,14 +150,17 @@ public class Environment {
         return position;
     }
 
-    public double getCellData(){
+    public double[][] getCellData(){
         double sum = 0;
-        for (Cell[] ctab: cells) {
-            for (Cell c: ctab) {
-                sum = sum + c.getConcentration();
+        double[][] result = new double [cellsPerSide+1][cellsPerSide];
+        for (int i = 0; i<cellsPerSide ; i++) {
+            for (int j = 0; j<cellsPerSide ; j++) {
+                result[i][j] = cells[i][j].getConcentration();
+                sum = sum + cells[i][j].getConcentration();
             }
         }
-        return sum;
+        result[cellsPerSide][cellsPerSide-1]=sum;
+        return result;
     }
 
     //GETTERS

@@ -8,6 +8,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
@@ -16,6 +17,7 @@ public class SpinnerSetter {
     GridPane gridSlider;
 
     public SpinnerSetter(String nom, double minValue, double maxValue, double defaultValue, String unit) {
+
         //Create a slider with values
         Slider slider = new Slider(minValue, maxValue, defaultValue);
         //Slider settings
@@ -32,39 +34,46 @@ public class SpinnerSetter {
         Label sliderValue = new Label(Double.toString(slider.getValue()) + " " +unit);
 
         //Spinner for more precise tuning
-        Spinner<Double> sliderSpinner = new Spinner<Double>();
-        SpinnerValueFactory<Double> sliderSpinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minValue, maxValue, defaultValue);
-        sliderSpinner.setValueFactory(sliderSpinnerFactory);
-        sliderSpinner.setEditable(true);
+        Spinner<Double> spinner = new Spinner<Double>();
+        SpinnerValueFactory<Double> spinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minValue, Integer.MAX_VALUE, defaultValue);
+        spinner.setValueFactory(spinnerFactory);
+        spinner.setEditable(true);
 
         //Hack to update values once the spinner lose focus
-        sliderSpinner.focusedProperty().addListener((s, old_value, new_value) -> {
+        spinner.focusedProperty().addListener((s, old_value, new_value) -> {
             if (new_value) return;
-            commitEditorText(sliderSpinner);
+            commitEditorText(spinner);
         });
 
         //Slider event listener
         slider.valueProperty().addListener((
                 ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) -> {
-            sliderValue.setText(String.format("%.2f", new_val) + " " +unit);
+            sliderValue.setText(String.format("%.2f", new_val.floatValue()) + " " +unit);
             //Changes the text color once value is updated
             sliderValue.setTextFill(Color.RED);
             //Also update the spinner
-            sliderSpinnerFactory.setValue(new_val.doubleValue());
+            spinnerFactory.setValue(new_val.doubleValue());
             //Updating class value
             value = new_val.doubleValue();
         });
 
         //Spinner listener
-        sliderSpinnerFactory.valueProperty().addListener((
+        spinnerFactory.valueProperty().addListener((
                 ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) -> {
-            sliderValue.setText(String.format("%.2f", new_val) + " " +unit);
+            sliderValue.setText(String.format("%.2f", new_val.floatValue()) + " " +unit);
             //Changes the text color once value is updated
             sliderValue.setTextFill(Color.RED);
             //Change slider value
+            //Update when current value is superior to max only (as set by the spinner for example)
+            if(new_val.doubleValue()>=slider.getMax())   {
+                slider.setMax(new_val.doubleValue());
+                slider.setMajorTickUnit((int) new_val.doubleValue() / 3);
+                slider.setMinorTickCount((int) new_val.doubleValue() / 15);
+            }
             slider.setValue(new_val.doubleValue());
+
             //Updating class value
             value = new_val.doubleValue();
         });
@@ -88,13 +97,21 @@ public class SpinnerSetter {
 
         gridSlider.add(sliderCaption, 0, 0);
         gridSlider.add(slider, 1, 0);
-        gridSlider.add(sliderSpinner, 2, 0);
+        gridSlider.add(spinner, 2, 0);
         gridSlider.add(sliderValue, 3, 0);
 
         gridSlider.setHalignment(sliderCaption, HPos.RIGHT);
 
         gridSlider.setHgap(10);
         gridSlider.setVgap(20);
+
+        gridSlider.maxWidth(Double.MAX_VALUE);
+
+        gridSlider.setHgrow(sliderCaption, Priority.ALWAYS);
+        gridSlider.setHgrow(slider, Priority.ALWAYS);
+        gridSlider.setHgrow(spinner, Priority.ALWAYS);
+        gridSlider.setHgrow(sliderValue, Priority.ALWAYS);
+
     }
 
     /**

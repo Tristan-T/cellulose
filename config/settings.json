@@ -3,14 +3,14 @@
     "Simulation": {
       "timeDelta": 0.3,
       "initialBacteriaAmount": 50,
-      "timeDeltaSubdivision": 50,
+      "timeDeltaSubdivision": 1,
       "maxDuration": 100.0
     }
   },
   {
     "Environment": {
       "halfLength": 40.0,
-      "cellsPerSide": 10,
+      "cellsPerSide": 20,
       "substratumRadius": 25.0
     }
   },

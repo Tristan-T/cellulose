@@ -29,33 +29,39 @@ public class Bacterium {
         //VX=vd(Co-Ce)/2H
         //X(t+delta)=Xt + deltaVX + Bdiff * sqrt(delta) * rand();
         //System.out.println("moving from " + x + " " + y + "...");
-        double vx = vd*((computeConcentrationInDirection("west")-computeConcentrationInDirection("east")))/(2*Cell.getLength());
-        x = x + (environment.getTimeDelta()*vx) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
-        if(x<0){
+        double vx = vd*((computeConcentrationInDirection("east")-computeConcentrationInDirection("west")))/(2*Cell.getLength());
+        double newx = x + (environment.getTimeDelta()*vx) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
+        if(newx<0){
             //if x is negative then wrap its position around the "environment"
             //to prevent the case where x is way too small (less than minus the width of the environment,
             //because of wrong speed parameter for example), we have to use a modulo
-            x=Environment.getHalfLength()*2-Math.abs(x%Environment.getHalfLength()*2);
-        }else if(x>=Environment.getHalfLength()*2){
+            newx=Environment.getHalfLength()*2-Math.abs(newx%Environment.getHalfLength()*2);
+        }else if(newx>=Environment.getHalfLength()*2){
             //if x is too large then wrap its position around the "environment"
-            x=x%(Environment.getHalfLength()*2);
+            newx=newx%(Environment.getHalfLength()*2);
         }
 
 
         //VY=vd(Co-Ce)/2H
         //Y(t+delta)=Yt + deltaVY + Bdiff * sqrt(delta) * rand();
-        double vy =vd*((computeConcentrationInDirection("south")-computeConcentrationInDirection("north")))/(2*Cell.getLength());
-        y = y + (environment.getTimeDelta()*vy) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
-        if(y<0){
+        double vy =vd*((computeConcentrationInDirection("north")-computeConcentrationInDirection("south")))/(2*Cell.getLength());
+        double newy = y + (environment.getTimeDelta()*vy) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
+        if(newy<0){
             //if y is negative then wrap its position around the "environment"
             //to prevent the case where x is way too small (less than minus the height of the environment,
             //because of wrong speed parameter for example), we have to use a modulo
-            y=Environment.getHalfLength()*2-Math.abs(y%Environment.getHalfLength()*2);
-        }else if(y>=Environment.getHalfLength()*2){
+            newy=Environment.getHalfLength()*2-Math.abs(y%Environment.getHalfLength()*2);
+        }else if(newy>=Environment.getHalfLength()*2){
             //if y is too large then wrap its position around the "environment"
-            y=y%(Environment.getHalfLength()*2);
+            newy=newy%(Environment.getHalfLength()*2);
         }
         //System.out.println("...to " + x + " " + y);
+
+        //Test if the bacteria ends up in a valid position
+        if(environment.getNeighboringCells(newx, newy)[1][1].isSemiLiquid()){
+            x=newx;
+            y=newy;
+        }
     }
 
     /**

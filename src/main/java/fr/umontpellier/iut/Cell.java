@@ -30,7 +30,8 @@ public class Cell {
      */
     public void diffuse() {
         if (isSemiLiquid) {
-            Cell[][] neighbors = environment.getNeighboringCells((xCell) * length, (yCell) * length);
+            //System.out.println("diffusing cell at: " + xCell * length + " " + yCell* length);
+            Cell[][] neighbors = environment.getNeighboringCells(xCell * length, yCell * length);
             //Compute the sum of Dv*Cv-Nv*C over the 4 directly adjacent cells
             double sum = 0;
             int n = 0;
@@ -38,37 +39,39 @@ public class Cell {
                 for (int j = 0; j < 3; j++) {
                     if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid()) {
                         sum += neighbors[i][j].getConcentration();
+                        System.out.println(neighbors[i][j].getConcentration());
                         n++;
                     }
                 }
             }
             //At this point, sum has the sum of the concentrations of the valid cells, aka the the first part (Dv*Cv)
             //because Dv = 1 if the cell is valid (isSemiLiquid), else Dv = 0
-            //Now subtract 4 times concentration*nb valid cells
-            sum -= (n * concentration)*4;
 
+            //Now subtract 4 times concentration*nb valid cells
             //Now sum has the total amount of concentration gained.
-            sum = vDiff * environment.getTimeDelta() * length * length * sum;
+
+            double concentrationDelta = vDiff * environment.getTimeDelta() * length * length * (sum-(n*concentration));
+            System.out.println("concentrationDelta="+vDiff+" length*length=" + length*length + " sum="+sum + " timeDelta="+environment.getTimeDelta());
 
             //The gained concentration is evenly subtracted from the "donor" cells
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid()) {
-                        neighbors[i][j].setConcentration(neighbors[i][j].getConcentration()-sum/n);
+                        neighbors[i][j].setConcentration(neighbors[i][j].getConcentration()+vDiff * environment.getTimeDelta() * length * length * (sum-(n*neighbors[i][j].getConcentration())));
                     }
                 }
             }
 
             //Update the concentration
-            System.out.println("old concentration: " + concentration);
-            System.out.println("sum: " + sum);
-            concentration = concentration + sum;
-            System.out.println("new concentration: " + concentration);
-            if(Double.isNaN(concentration)||Double.isInfinite(concentration)) {
-                System.exit(0);
-            }
+            concentration = concentration + concentrationDelta;
+//            if(Double.isNaN(concentration)||Double.isInfinite(concentration)) {
+//                System.out.println("concentrationDelta: " + concentrationDelta);
+//                System.exit(0);
+//            }
         }
     }
+
+
 
     /**
      * Lowers the concentration of the cell (because of bacteria)
@@ -76,8 +79,9 @@ public class Cell {
      */
     public void getBrokenDown(double amount) {
         //Update concentration
+        //System.out.println("before " +concentration);
         concentration = concentration-(amount/(length*length));
-
+        //System.out.println("after " +concentration);
         //Update isSemiLiquid
         if(concentration<=cMin){
             isSemiLiquid=true;

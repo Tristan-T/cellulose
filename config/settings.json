@@ -4,7 +4,7 @@
       "timeDelta": 0.3,
       "initialBacteriaAmount": 50,
       "timeDeltaSubdivision": 60,
-      "maxDuration": 100.0
+      "maxDuration": 1000.0
     }
   },
   {

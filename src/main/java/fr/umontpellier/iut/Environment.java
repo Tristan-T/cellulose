@@ -162,7 +162,7 @@ public class Environment {
                 sum = sum + cells[i][j].getConcentration();
             }
         }
-        result[cellsPerSide][cellsPerSide-1]=sum;
+        result[cellsPerSide][0]=sum;
         return result;
     }
 

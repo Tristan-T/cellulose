@@ -20,6 +20,7 @@ public class Simulation {
     //Or returns an int which could be the execution code
     public void run() {
         double lastFrame = maxDuration;
+        algoend:
         while (maxDuration>0) {
             maxDuration-=timeDelta/timeDeltaSubdivision;
             //System.out.println(maxDuration);
@@ -28,9 +29,14 @@ public class Simulation {
                 //output data
                 lastFrame=maxDuration;
                 //double[][] data = environment.getCellData();
-                double[][] data = environment.getBacteriaData();
+                double[][] bacteriaData = environment.getBacteriaData();
+                double[][] cellData = environment.getCellData();
                 //System.out.println(Arrays.deepToString(data).replace("], ", "]\n").replace(", ", "\t\t"));
-                System.out.println(data[data.length-1][0]);
+                System.out.println("Total biomass: " + bacteriaData[bacteriaData.length-1][0]);
+                System.out.println("Total concentration: " + cellData[cellData.length-1][0]);
+                if (cellData[cellData.length-1][0]<=0.0) {
+                    break algoend;
+                }
             }
             environment.tick();
         }

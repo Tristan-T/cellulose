@@ -1,7 +1,5 @@
 package fr.umontpellier.iut;
 
-import java.util.Arrays;
-
 public class Simulation {
     private static double timeDelta;
     private static int timeDeltaSubdivision;
@@ -29,10 +27,11 @@ public class Simulation {
             if (maxDuration<lastFrame-timeDelta){
                 //output data
                 lastFrame=maxDuration;
-                double[][] data = environment.getCellData();
-                System.out.println(Arrays.deepToString(data).replace("], ", "]\n").replace(", ", "\t\t"));
-                }
-                //System.out.println(data[data.length-1][0]);
+                //double[][] data = environment.getCellData();
+                double[][] data = environment.getBacteriaData();
+                //System.out.println(Arrays.deepToString(data).replace("], ", "]\n").replace(", ", "\t\t"));
+                System.out.println(data[data.length-1][0]);
+            }
             environment.tick();
         }
         }

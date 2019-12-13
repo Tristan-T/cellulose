@@ -1,6 +1,5 @@
 package fr.umontpellier.iut;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Environment {
@@ -145,23 +144,25 @@ public class Environment {
             sum = sum + b.getMass();
             i++;
         }
-        position[i][0] = sum;
-        position[i][1] = 0;
+        position[bacteria.size()][0] = sum;
+        position[bacteria.size()][1] = 0;
 
         return position;
     }
 
     public double[][] getCellData(){
-        DecimalFormat df = new DecimalFormat("#.#");
+//        DecimalFormat df = new DecimalFormat("#.#");
         double sum = 0;
-        double[][] result = new double [cellsPerSide][cellsPerSide];
+//        double[][] result = new double [cellsPerSide][cellsPerSide];
+        double[][] result = new double [cellsPerSide+1][cellsPerSide];
         for (int i = 0; i<cellsPerSide ; i++) {
             for (int j = 0; j<cellsPerSide ; j++) {
-                result[i][j] = Double.parseDouble(df.format(new Double (cells[i][j].getConcentration())));
-                //sum = sum + cells[i][j].getConcentration();
+//                result[i][j] = Double.parseDouble(df.format(new Double (cells[i][j].getConcentration())));
+                result[i][j] = cells[i][j].getConcentration();
+                sum = sum + cells[i][j].getConcentration();
             }
         }
-        //result[cellsPerSide][cellsPerSide-1]=sum;
+        result[cellsPerSide][cellsPerSide-1]=sum;
         return result;
     }
 

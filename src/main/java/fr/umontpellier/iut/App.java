@@ -23,7 +23,6 @@ public class App {
         Settings.loadConfig("settings");
 
         Simulation simulation = new Simulation();
-        System.out.println(Cell.getLength());
         simulation.run();
     }
 

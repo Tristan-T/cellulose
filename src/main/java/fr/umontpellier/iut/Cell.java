@@ -39,7 +39,6 @@ public class Cell {
                 for (int j = 0; j < 3; j++) {
                     if ((i + j) % 2 != 0 && neighbors[i][j].isSemiLiquid()) {
                         sum += neighbors[i][j].getConcentration();
-                        System.out.println(neighbors[i][j].getConcentration());
                         n++;
                     }
                 }
@@ -51,7 +50,7 @@ public class Cell {
             //Now sum has the total amount of concentration gained.
 
             double concentrationDelta = vDiff * environment.getTimeDelta() * length * length * (sum-(n*concentration));
-            System.out.println("concentrationDelta="+vDiff+" length*length=" + length*length + " sum="+sum + " timeDelta="+environment.getTimeDelta());
+            //System.out.println("concentrationDelta="+vDiff+" length*length=" + length*length + " sum="+sum + " timeDelta="+environment.getTimeDelta());
 
             //The gained concentration is evenly subtracted from the "donor" cells
             for (int i = 0; i < 3; i++) {
@@ -64,10 +63,10 @@ public class Cell {
 
             //Update the concentration
             concentration = concentration + concentrationDelta;
-//            if(Double.isNaN(concentration)||Double.isInfinite(concentration)) {
-//                System.out.println("concentrationDelta: " + concentrationDelta);
-//                System.exit(0);
-//            }
+            if(Double.isNaN(concentration)||Double.isInfinite(concentration)) {
+                System.out.println("concentrationDelta: " + concentrationDelta);
+                System.exit(0);
+            }
         }
     }
 

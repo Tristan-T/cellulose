@@ -44,7 +44,7 @@ public class Simulation {
                 double[][] bacteriaData = environment.getBacteriaData();
                 double[][] cellData = environment.getCellData();
 
-                outputToFile(cellData, bacteriaData, maxDuration-timeLeft);
+                //outputToFile(cellData, bacteriaData, maxDuration-timeLeft);
 
                 //Sout for debugging purposes
                 System.out.println("Total population: " + (bacteriaData.length-1));

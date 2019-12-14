@@ -22,12 +22,7 @@ public class App {
 
         Settings.loadConfig("settings");
 
-        Simulation simulation = new Simulation();
+        Simulation simulation = new Simulation("outputTestRun");
         simulation.run();
     }
-
-    /**
-     * NOTES :
-     * - ...
-     */
 }

@@ -133,36 +133,50 @@ public class Environment {
         return sum;
     }
 
+    /**
+     * Returns all data about the Bacteria(x, y, mass, total mass) in an Array, the last
+     * columns only contains the total mass in the first position
+     * @return Returns all data about the Bacteria(x, y, mass, total mass)
+     */
     public double[][] getBacteriaData(){
         double sum = 0;
         double[][] position = new double[bacteria.size()+1][3];
         int i = 0;
         for (Bacterium b: bacteria) {
+            //First row: x
             position[i][0] = b.getX();
+            //First row: y
             position[i][1] = b.getY();
+            //First row: mass
             position[i][2] = b.getMass();
             sum = sum + b.getMass();
             i++;
         }
+
+        //Last column, first row: total mass
         position[bacteria.size()][0] = sum;
         position[bacteria.size()][1] = 0;
 
         return position;
     }
 
+    /**
+     * Returns all the data about the cells(concentration, total mass of substratum) in Array the shape of
+     * cells[][] plus one row containing the total substratum mass on the first row.
+     * @return Returns all the data about the cells(concentration, total mass of substratum)
+     */
     public double[][] getCellData(){
-//        DecimalFormat df = new DecimalFormat("#.#");
         double sum = 0;
-//        double[][] result = new double [cellsPerSide][cellsPerSide];
         double[][] result = new double [cellsPerSide+1][cellsPerSide];
         for (int i = 0; i<cellsPerSide ; i++) {
             for (int j = 0; j<cellsPerSide ; j++) {
-//                result[i][j] = Double.parseDouble(df.format(new Double (cells[i][j].getConcentration())));
+                //Concentration of the corresponding cell of cells[][]
                 result[i][j] = cells[i][j].getConcentration();
                 sum = sum + cells[i][j].getConcentration();
             }
         }
-        result[cellsPerSide][0]=sum;
+        //Total mass of substratum: totalConcentration/(h*h)
+        result[cellsPerSide][0]=sum/(Cell.getLength()*Cell.getLength());
         return result;
     }
 

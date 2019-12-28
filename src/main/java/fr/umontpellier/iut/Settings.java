@@ -64,7 +64,7 @@ public class Settings {
     public static double getSimulation_maxDuration() { return Simulation.getMaxDuration(); }
 
     //CONFIG INTERACTION
-    public static void exportConfig(String fileName){
+    public static void exportConfig(String fileName) throws IOException{
         //Create the various JSON objects and fill them with appropriate values
         JSONObject simulationSettings = new JSONObject();
         simulationSettings.put("timeDelta", Settings.getSimulation_timeDelta());
@@ -110,7 +110,6 @@ public class Settings {
 
         //Write JSON file in the config folder
         try (FileWriter file = new FileWriter(fileName)) {
-
             file.write(config.toJSONString());
             file.flush();
 
@@ -119,7 +118,7 @@ public class Settings {
         }
     }
 
-    public static void loadConfig(String fileName){
+    public static void loadConfig(String fileName) throws IOException{
         JSONParser jsonParser = new JSONParser();
 
         try (FileReader reader = new FileReader(fileName))

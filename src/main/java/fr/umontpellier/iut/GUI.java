@@ -189,7 +189,16 @@ public class GUI extends Application {
 
                         //Configuration is imported here
                         //Exception is handled by Settings
-                        importSettings(selectedFile);
+                        try {
+                            importSettings(selectedFile);
+                        } catch (IOException e){
+                            Alert importError = new Alert(Alert.AlertType.ERROR);
+                            importError.setTitle("import error");
+                            importError.setHeaderText(null);
+                            importError.setContentText("Can't import configuration");
+
+                            importError.showAndWait();
+                        }
 
                         importSuccessful.showAndWait();
                     } else {
@@ -232,29 +241,17 @@ public class GUI extends Application {
                 File savedFile = settingExporter.showSaveDialog(stage);
 
                 if (savedFile != null) {
-                    /*
-                     * EXPORTING THE CONFIGURATION NEEDS TO BE HERE
-                     * MUST ADD THE CONFIGURATION RETRIEVE PROCESS
-                     */
-                    Settings.exportConfig(savedFile.getName());
-                    /* Doesn't want to catch IOException, must check later
+                    //Exporting the configuration
                     try {
+                        exportSettings(savedFile);
+                    } catch(IOException e) {
+                        Alert saveError = new Alert(Alert.AlertType.ERROR);
+                        saveError.setTitle("Export error");
+                        saveError.setHeaderText(null);
+                        saveError.setContentText("Can't export configuration");
 
+                        saveError.showAndWait();
                     }
-
-                    catch(IOException e) {
-
-                    e.printStackTrace();
-                    Alert saveError = new Alert(Alert.AlertType.ERROR);
-                    saveError.setTitle("Export error");
-                    saveError.setHeaderText(null);
-                    saveError.setContentText("Can't export configuration");
-
-                    saveError.showAndWait();
-
-                    throw new IOException("Something happened");
-                    }
-                    */
 
                     Alert saveSuccessful = new Alert(Alert.AlertType.INFORMATION);
                     saveSuccessful.setTitle("Configuration exported");
@@ -288,7 +285,7 @@ public class GUI extends Application {
 
     }
 
-    private static void importSettings(File file) {
+    private static void importSettings(File file) throws IOException{
         Settings.loadConfig(file.getAbsolutePath());
 
         timeDelta.setValue(Settings.getSimulation_timeDelta());
@@ -309,6 +306,33 @@ public class GUI extends Application {
         vCons.setValue(Settings.getBacterium_vCons());
         kConv.setValue(Settings.getBacterium_kConv());
         vd.setValue(Settings.getBacterium_vd());
+    }
+    
+    private static void exportSettings(File file) throws IOException{
+        Settings.setSimulation_timeDelta(timeDelta.getValue());
+        Settings.setSimulation_initialBacteriaAmount((int) initialBacteriaAmount.getValue());
+        Settings.setSimulation_timeDeltaSubdivision((int) timeDeltaSubdivision.getValue());
+        Settings.setSimulation_maxDuration(maxDuration.getValue());
+
+        Settings.setEnvironment_halfLength(halfLength.getValue());
+        Settings.setEnvironment_cellsPerSide((int) cellsPerSide.getValue());
+        Settings.setEnvironment_substratumRadius(substratumRadius.getValue());
+
+        Settings.setCell_cMin(cMin.getValue());
+        Settings.setCell_vDiff(vDiff.getValue());
+        Settings.setCell_cIni(cIni.getValue());
+
+        Settings.setBacterium_bDiff(bDiff.getValue());
+        Settings.setBacterium_mIni(mIni.getValue());
+        Settings.setBacterium_vCons(vCons.getValue());
+        Settings.setBacterium_kConv(kConv.getValue());
+        Settings.setBacterium_vd(vd.getValue());
+
+        try {
+            Settings.exportConfig(file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

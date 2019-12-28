@@ -1,5 +1,7 @@
 package fr.umontpellier.iut;
 
+import java.io.IOException;
+
 public class App {
     public static void main(String[] args) {
 //        Settings.setBacterium_bDiff(1);
@@ -19,8 +21,11 @@ public class App {
 //        Settings.setSimulation_maxDuration(500);
 //
 //        Settings.exportConfig("settings");
-
-        Settings.loadConfig("settings");
+        try {
+            Settings.loadConfig("settings");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Simulation simulation = new Simulation("outputTestRun");
         simulation.run();

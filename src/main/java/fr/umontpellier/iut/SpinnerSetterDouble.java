@@ -2,10 +2,7 @@ package fr.umontpellier.iut;
 
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -50,6 +47,14 @@ public class SpinnerSetterDouble extends SpinnerSetter {
         spinnerFactory.valueProperty().addListener((
                 ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) -> {
+
+            //If the user inputs nothing or something incorrect, we reset to the default value
+            if(new_val==null) {
+                new_val= (int) defaultValue;
+            } else {
+                new_val = new_val.doubleValue();
+            }
+
             sliderValue.setText(String.format("%.2f", new_val.floatValue()) + " " +unit);
             //Changes the text color once value is updated
             sliderValue.setTextFill(Color.RED);
@@ -65,6 +70,11 @@ public class SpinnerSetterDouble extends SpinnerSetter {
             //Updating class value
             value = new_val.doubleValue();
         });
+
+        //Prevent the user from inputting whatever inside the spinner
+        TextFormatter<Double> formatter = new TextFormatter<>(spinnerFactory.getConverter(), spinnerFactory.getValue());
+        spinner.getEditor().setTextFormatter(formatter);
+        spinnerFactory.valueProperty().bindBidirectional(formatter.valueProperty());
 
         look(spinner);
     }

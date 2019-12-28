@@ -163,9 +163,15 @@ public class GUI extends Application {
                 FileChooser settingImporter = new FileChooser();
                 //Set filter
                 settingImporter.getExtensionFilters().add(jsonFilter);
-                File selectedFile = settingImporter.showOpenDialog(null);
                 settingImporter.setTitle("Choose a configuration file");
+                //Setting initial directory
+                String currentDirectoryString = System.getProperty("user.dir");
+                File currentDirectory = new File(currentDirectoryString);
+                if(currentDirectory.canRead()) {
+                    settingImporter.setInitialDirectory(currentDirectory);
+                }
 
+                File selectedFile = settingImporter.showOpenDialog(stage);
 
                 if (selectedFile != null) {
 
@@ -180,9 +186,9 @@ public class GUI extends Application {
                         importSuccessful.setTitle("Configuration imported");
                         importSuccessful.setHeaderText(null);
                         importSuccessful.setContentText("File imported : " + selectedFile.getName());
-                        /*
-                        * IMPORT THE CONFIGURATION HERE
-                         */
+
+                        //Configuration is imported here
+                        //Exception is handled by Settings
                         importSettings(selectedFile);
 
                         importSuccessful.showAndWait();
@@ -216,9 +222,14 @@ public class GUI extends Application {
                 settingExporter.setTitle("Save your configuration");
                 //Set extension filter for text files
                 settingExporter.getExtensionFilters().add(jsonFilter);
+                //Setting initial directory
+                String currentDirectoryString = System.getProperty("user.dir");
+                File currentDirectory = new File(currentDirectoryString);
+                if(currentDirectory.canRead()) {
+                    settingExporter.setInitialDirectory(currentDirectory);
+                }
+
                 File savedFile = settingExporter.showSaveDialog(stage);
-
-
 
                 if (savedFile != null) {
                     /*

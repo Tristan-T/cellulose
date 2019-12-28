@@ -79,4 +79,9 @@ public class SpinnerSetterDouble extends SpinnerSetter {
         look(spinner);
     }
 
+    protected void updateValue(double value) {
+        slider.setValue(value);
+        spinner.getValueFactory().setValue(value);
+    }
+
 }

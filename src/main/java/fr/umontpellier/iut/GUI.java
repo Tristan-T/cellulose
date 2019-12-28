@@ -3,7 +3,9 @@ package fr.umontpellier.iut;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -34,27 +36,27 @@ public class GUI extends Application {
      */
 
     // Simulation
-    private SpinnerSetterDouble timeDelta = new SpinnerSetterDouble("timeDelta", 0, 200, 10, "h");
-    private SpinnerSetterInteger initialBacteriaAmount = new SpinnerSetterInteger("initialBacteriaAmount", 0, 200, 10, "bacteria"); //INT
-    private SpinnerSetterInteger timeDeltaSubdivision = new SpinnerSetterInteger("timeDeltaSubdivision", 0, 200, 10, "subdivision"); //INT
-    private SpinnerSetterDouble maxDuration = new SpinnerSetterDouble("maxDuration", 0, 200, 10, "h");
+    private static SpinnerSetterDouble timeDelta = new SpinnerSetterDouble("timeDelta", 0, 200, 10, "h");
+    private static SpinnerSetterInteger initialBacteriaAmount = new SpinnerSetterInteger("initialBacteriaAmount", 0, 200, 10, "bacteria"); //INT
+    private static SpinnerSetterInteger timeDeltaSubdivision = new SpinnerSetterInteger("timeDeltaSubdivision", 0, 200, 10, "subdivision"); //INT
+    private static SpinnerSetterDouble maxDuration = new SpinnerSetterDouble("maxDuration", 0, 200, 10, "h");
 
     // Environment
-    private SpinnerSetterDouble halfLength = new SpinnerSetterDouble("halfLength", 0, 200, 10, "µm");
-    private SpinnerSetterInteger cellsPerSide = new SpinnerSetterInteger("cellsPerSide", 0, 200, 10, "cell(s)"); //INT
-    private SpinnerSetterDouble substratumRadius = new SpinnerSetterDouble("substratumRadius", 0, 200, 10, "µm");
+    private static SpinnerSetterDouble halfLength = new SpinnerSetterDouble("halfLength", 0, 200, 10, "µm");
+    private static SpinnerSetterInteger cellsPerSide = new SpinnerSetterInteger("cellsPerSide", 0, 200, 10, "cell(s)"); //INT
+    private static SpinnerSetterDouble substratumRadius = new SpinnerSetterDouble("substratumRadius", 0, 200, 10, "µm");
 
     // Cell
-    private SpinnerSetterDouble cMin = new SpinnerSetterDouble("cMin", 0, 200, 10, "pg/µm²");
-    private SpinnerSetterDouble vDiff = new SpinnerSetterDouble("vDiff", 0, 200, 10, "µm²/h");
-    private SpinnerSetterDouble cIni = new SpinnerSetterDouble("cIni", 0, 200, 10, "pg/µm²");
+    private static SpinnerSetterDouble cMin = new SpinnerSetterDouble("cMin", 0, 200, 10, "pg/µm²");
+    private static SpinnerSetterDouble vDiff = new SpinnerSetterDouble("vDiff", 0, 200, 10, "µm²/h");
+    private static SpinnerSetterDouble cIni = new SpinnerSetterDouble("cIni", 0, 200, 10, "pg/µm²");
 
     // Bacterium
-    private SpinnerSetterDouble bDiff = new SpinnerSetterDouble("bDiff", 0, 200, 10, "µm/√h");
-    private SpinnerSetterDouble mIni = new SpinnerSetterDouble("mIni", 0, 200, 10, "pg");
-    private SpinnerSetterDouble vCons = new SpinnerSetterDouble("vCons", 0, 200, 10, "pg/h");
-    private SpinnerSetterDouble kConv = new SpinnerSetterDouble("kConv", 0, 100, 10, "%"); //Don't forget to divide by 100
-    private SpinnerSetterDouble vd = new SpinnerSetterDouble("vd", 0, 200, 10, "µm⁴/pgh");
+    private static SpinnerSetterDouble bDiff = new SpinnerSetterDouble("bDiff", 0, 200, 10, "µm/√h");
+    private static SpinnerSetterDouble mIni = new SpinnerSetterDouble("mIni", 0, 200, 10, "pg");
+    private static SpinnerSetterDouble vCons = new SpinnerSetterDouble("vCons", 0, 200, 10, "pg/h");
+    private static SpinnerSetterDouble kConv = new SpinnerSetterDouble("kConv", 0, 100, 10, "%"); //Don't forget to divide by 100
+    private static SpinnerSetterDouble vd = new SpinnerSetterDouble("vd", 0, 200, 10, "µm⁴/pgh");
 
 
 
@@ -136,6 +138,9 @@ public class GUI extends Application {
 
     private GridPane launcherBox(Stage stage) throws IOException {
         GridPane launcher = new GridPane();
+        launcher.setHgap(100);
+        launcher.setVgap(5);
+        launcher.setPadding(new Insets(10, 10, 10, 10));
 
         InputStream streamRun = getClass().getResourceAsStream("/run.png");
         Image runImage = new Image(streamRun);
@@ -176,8 +181,9 @@ public class GUI extends Application {
                         importSuccessful.setHeaderText(null);
                         importSuccessful.setContentText("File imported : " + selectedFile.getName());
                         /*
-                        * MUST IMPORT THE CONFIGURATION HERE
+                        * IMPORT THE CONFIGURATION HERE
                          */
+                        importSettings(selectedFile);
 
                         importSuccessful.showAndWait();
                     } else {
@@ -264,13 +270,34 @@ public class GUI extends Application {
         launcher.add(runButton, 0, 1);
         launcher.add(stopButton, 1, 1);
 
-
-
         return launcher;
     }
 
     private static void celluloseModel(Scene scene) {
 
+    }
+
+    private static void importSettings(File file) {
+        Settings.loadConfig(file.getAbsolutePath());
+
+        timeDelta.setValue(Settings.getSimulation_timeDelta());
+        initialBacteriaAmount.setValue(Settings.getSimulation_initialBacteriaAmount());
+        timeDeltaSubdivision.setValue(Settings.getSimulation_timeDeltaSubdivision());
+        maxDuration.setValue(Settings.getSimulation_maxDuration());
+
+        halfLength.setValue(Settings.getEnvironment_halfLength());
+        cellsPerSide.setValue(Settings.getEnvironment_cellsPerSide());
+        substratumRadius.setValue(Settings.getEnvironment_substratumRadius());
+
+        cMin.setValue(Settings.getCell_cMin());
+        vDiff.setValue(Settings.getCell_vDiff());
+        cIni.setValue(Settings.getCell_cIni());
+
+        bDiff.setValue(Settings.getBacterium_bDiff());
+        mIni.setValue(Settings.getBacterium_mIni());
+        vCons.setValue(Settings.getBacterium_vCons());
+        kConv.setValue(Settings.getBacterium_kConv());
+        vd.setValue(Settings.getBacterium_vd());
     }
 
     @Override
@@ -300,8 +327,13 @@ public class GUI extends Application {
         });
 
         VBox leftSide = new VBox();
-        leftSide.getChildren().add(settingTabs());
-        leftSide.getChildren().add(launcherBox(stage));
+
+        TabPane settingsTab = settingTabs();
+        GridPane launcherBox = launcherBox(stage);
+        launcherBox.setAlignment(Pos.CENTER);
+
+        leftSide.getChildren().add(settingsTab);
+        leftSide.getChildren().add(launcherBox);
 
 
 

@@ -108,4 +108,11 @@ public abstract class SpinnerSetter {
     public double getValue() {
         return value;
     }
+
+    public void setValue(double value) {
+        this.value = value;
+        updateValue(value);
+    }
+
+    abstract void updateValue(double value);
 }

@@ -109,7 +109,7 @@ public class Settings {
         config.add(bacterium);
 
         //Write JSON file in the config folder
-        try (FileWriter file = new FileWriter("./config/"+fileName+".json")) {
+        try (FileWriter file = new FileWriter(fileName)) {
 
             file.write(config.toJSONString());
             file.flush();
@@ -122,7 +122,7 @@ public class Settings {
     public static void loadConfig(String fileName){
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("./config/"+fileName+".json"))
+        try (FileReader reader = new FileReader(fileName))
         {
             //Read JSON file and cast it as JSONArray
             Object obj = jsonParser.parse(reader);

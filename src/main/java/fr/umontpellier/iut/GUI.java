@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -14,7 +13,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
@@ -35,9 +33,35 @@ public class GUI extends Application {
      * window.
      */
 
+    // Simulation
+    private SpinnerSetterDouble timeDelta = new SpinnerSetterDouble("timeDelta", 0, 200, 10, "h");
+    private SpinnerSetterInteger initialBacteriaAmount = new SpinnerSetterInteger("initialBacteriaAmount", 0, 200, 10, "bacteria"); //INT
+    private SpinnerSetterInteger timeDeltaSubdivision = new SpinnerSetterInteger("timeDeltaSubdivision", 0, 200, 10, "subdivision"); //INT
+    private SpinnerSetterDouble maxDuration = new SpinnerSetterDouble("maxDuration", 0, 200, 10, "h");
+
+    // Environment
+    private SpinnerSetterDouble halfLength = new SpinnerSetterDouble("halfLength", 0, 200, 10, "µm");
+    private SpinnerSetterInteger cellsPerSide = new SpinnerSetterInteger("cellsPerSide", 0, 200, 10, "cell(s)"); //INT
+    private SpinnerSetterDouble substratumRadius = new SpinnerSetterDouble("substratumRadius", 0, 200, 10, "µm");
+
+    // Cell
+    private SpinnerSetterDouble cMin = new SpinnerSetterDouble("cMin", 0, 200, 10, "pg/µm²");
+    private SpinnerSetterDouble vDiff = new SpinnerSetterDouble("vDiff", 0, 200, 10, "µm²/h");
+    private SpinnerSetterDouble cIni = new SpinnerSetterDouble("cIni", 0, 200, 10, "pg/µm²");
+
+    // Bacterium
+    private SpinnerSetterDouble bDiff = new SpinnerSetterDouble("bDiff", 0, 200, 10, "µm/√h");
+    private SpinnerSetterDouble mIni = new SpinnerSetterDouble("mIni", 0, 200, 10, "pg");
+    private SpinnerSetterDouble vCons = new SpinnerSetterDouble("vCons", 0, 200, 10, "pg/h");
+    private SpinnerSetterDouble kConv = new SpinnerSetterDouble("kConv", 0, 100, 10, "%"); //Don't forget to divide by 100
+    private SpinnerSetterDouble vd = new SpinnerSetterDouble("vd", 0, 200, 10, "µm⁴/pgh");
+
+
 
     //Getting screen properties
     private static Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+
 
 
     private TabPane settingTabs() {
@@ -45,42 +69,21 @@ public class GUI extends Application {
         TabPane settingsBox = new TabPane();
         settingsBox.setPadding(new Insets(10, 10, 10, 10));
 
-        // Simulation
-        SpinnerSetter timeDelta = new SpinnerSetter("timeDelta", 0, 200, 10, "toDefine");
-        SpinnerSetter initialBacteriaAmount = new SpinnerSetter("initialBacteriaAmount", 0, 200, 10, "toDefine");
-        SpinnerSetter timeDeltaSubdivision = new SpinnerSetter("timeDeltaSubdivision", 0, 200, 10, "toDefine");
-        SpinnerSetter maxDuration = new SpinnerSetter("maxDuration", 0, 200, 10, "toDefine");
-
-        // Environment
-        SpinnerSetter halfLength = new SpinnerSetter("halfLength", 0, 200, 10, "toDefine");
-        SpinnerSetter cellsPerSide = new SpinnerSetter("cellsPerSide", 0, 200, 10, "toDefine");
-        SpinnerSetter substratumRadius = new SpinnerSetter("substratumRadius", 0, 200, 10, "toDefine");
-
-        // Cell
-        SpinnerSetter cMin = new SpinnerSetter("cMin", 0, 200, 10, "toDefine");
-        SpinnerSetter vDiff = new SpinnerSetter("vDiff", 0, 200, 10, "toDefine");
-        SpinnerSetter cIni = new SpinnerSetter("cIni", 0, 200, 10, "toDefine");
-
-        // Bacterium
-        SpinnerSetter bDiff = new SpinnerSetter("bDiff", 0, 200, 10, "toDefine");
-        SpinnerSetter mIni = new SpinnerSetter("mIni", 0, 200, 10, "toDefine");
-        SpinnerSetter vCons = new SpinnerSetter("vCons", 0, 200, 10, "toDefine");
-        SpinnerSetter kConv = new SpinnerSetter("kConv", 0, 200, 10, "toDefine");
-        SpinnerSetter vd = new SpinnerSetter("vd", 0, 200, 10, "toDefine");
-
         // Creating pane to correctly place setters per categories
         GridPane simulationGridPane = new GridPane();
-        simulationGridPane.maxWidth(Double.MAX_VALUE);
         GridPane environmentGridPane = new GridPane();
         GridPane cellGridPane = new GridPane();
         GridPane bacteriumGridPane = new GridPane();
 
         //List for easier aesthetic manipulations
         ArrayList<GridPane> gridPanes = new ArrayList<>();
+
         gridPanes.add(simulationGridPane);
         gridPanes.add(environmentGridPane);
         gridPanes.add(cellGridPane);
         gridPanes.add(bacteriumGridPane);
+
+
 
         for (GridPane g: gridPanes) {
             g.setVgap(10);
@@ -125,6 +128,7 @@ public class GUI extends Application {
         settingsBox.getTabs().add(cellTab);
         settingsBox.getTabs().add(bacteriumTab);
 
+        //Disable ability to close tabs
         settingsBox.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         return settingsBox;
@@ -132,8 +136,6 @@ public class GUI extends Application {
 
     private GridPane launcherBox(Stage stage) throws IOException {
         GridPane launcher = new GridPane();
-
-        SpinnerSetter numberRun = new SpinnerSetter("Nombre d'exécutions", 0, 100, 1, "tours");
 
         InputStream streamRun = getClass().getResourceAsStream("/run.png");
         Image runImage = new Image(streamRun);
@@ -257,19 +259,14 @@ public class GUI extends Application {
 
 
 
-        launcher.add(numberRun.getSpinnerSetter(), 0, 0);
-        launcher.add(importButton, 0, 1);
-        launcher.add(exportButton, 1, 1);
-        launcher.add(runButton, 0, 2);
-        launcher.add(stopButton, 1, 2);
+        launcher.add(importButton, 0, 0);
+        launcher.add(exportButton, 1, 0);
+        launcher.add(runButton, 0, 1);
+        launcher.add(stopButton, 1, 1);
 
 
 
         return launcher;
-    }
-
-    private static void launchingPane(Scene scene) {
-
     }
 
     private static void celluloseModel(Scene scene) {

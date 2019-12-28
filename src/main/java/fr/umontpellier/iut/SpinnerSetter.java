@@ -1,6 +1,5 @@
 package fr.umontpellier.iut;
 
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -9,75 +8,48 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
-public class SpinnerSetter {
-    double value;
-    GridPane gridSlider;
+public abstract class SpinnerSetter {
+    protected String nom;
+    protected double minValue, maxValue, defaultValue;
+    protected String unit;
+    protected double value;
+    protected GridPane gridSlider;
+    protected Slider slider;
+    protected Label sliderCaption;
+    protected Label sliderValue;
 
     public SpinnerSetter(String nom, double minValue, double maxValue, double defaultValue, String unit) {
+        this.nom = nom;
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.defaultValue = defaultValue;
+        this.unit = unit;
 
-        //Create a slider with values
-        Slider slider = new Slider(minValue, maxValue, defaultValue);
+        //Creating slider part
+        this.slider = new Slider(minValue, maxValue, defaultValue);
+
+        //Setting default value for class variable
+        this.value = defaultValue;
+
+        //Title and value
+        this.sliderCaption = new Label(nom + " value : ");
+        this.sliderValue = new Label(Double.toString(slider.getValue()) + " " +unit);
+
+        this.instantiateSpinner();
+    }
+
+    abstract protected void instantiateSpinner();
+
+    void look(Spinner spinner) {
         //Slider settings
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
         slider.setMajorTickUnit((int) maxValue/3);
         slider.setMinorTickCount((int) maxValue/15);
 
-        //Setting default value for class variable
-        value = defaultValue;
-
-        //Title and value
-        Label sliderCaption = new Label(nom + " value : ");
-        Label sliderValue = new Label(Double.toString(slider.getValue()) + " " +unit);
-
-        //Spinner for more precise tuning
-        Spinner<Double> spinner = new Spinner<Double>();
-        SpinnerValueFactory<Double> spinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minValue, Integer.MAX_VALUE, defaultValue);
-        spinner.setValueFactory(spinnerFactory);
-        spinner.setEditable(true);
-
-        //Hack to update values once the spinner lose focus
-        spinner.focusedProperty().addListener((s, old_value, new_value) -> {
-            if (new_value) return;
-            commitEditorText(spinner);
-        });
-
-        //Slider event listener
-        slider.valueProperty().addListener((
-                ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) -> {
-            sliderValue.setText(String.format("%.2f", new_val.floatValue()) + " " +unit);
-            //Changes the text color once value is updated
-            sliderValue.setTextFill(Color.RED);
-            //Also update the spinner
-            spinnerFactory.setValue(new_val.doubleValue());
-            //Updating class value
-            value = new_val.doubleValue();
-        });
-
-        //Spinner listener
-        spinnerFactory.valueProperty().addListener((
-                ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) -> {
-            sliderValue.setText(String.format("%.2f", new_val.floatValue()) + " " +unit);
-            //Changes the text color once value is updated
-            sliderValue.setTextFill(Color.RED);
-            //Change slider value
-            //Update when current value is superior to max only (as set by the spinner for example)
-            if(new_val.doubleValue()>=slider.getMax())   {
-                slider.setMax(new_val.doubleValue());
-                slider.setMajorTickUnit((int) new_val.doubleValue() / 3);
-                slider.setMinorTickCount((int) new_val.doubleValue() / 15);
-            }
-            slider.setValue(new_val.doubleValue());
-
-            //Updating class value
-            value = new_val.doubleValue();
-        });
-
+        //Package in a gridpane
         gridSlider = new GridPane();
 
         ColumnConstraints col1 = new ColumnConstraints();
@@ -111,13 +83,12 @@ public class SpinnerSetter {
         gridSlider.setHgrow(slider, Priority.ALWAYS);
         gridSlider.setHgrow(spinner, Priority.ALWAYS);
         gridSlider.setHgrow(sliderValue, Priority.ALWAYS);
-
     }
 
     /**
      * Copy and pasted from the Spinner class
      */
-    private static <T> void commitEditorText(Spinner<T> spinner) {
+    protected static <T> void commitEditorText(Spinner<T> spinner) {
         if (!spinner.isEditable()) return;
         String text = spinner.getEditor().getText();
         SpinnerValueFactory<T> valueFactory = spinner.getValueFactory();
@@ -137,8 +108,4 @@ public class SpinnerSetter {
     public double getValue() {
         return value;
     }
-
-
-
-
 }

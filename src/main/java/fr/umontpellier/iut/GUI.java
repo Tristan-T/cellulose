@@ -7,22 +7,19 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -63,10 +60,13 @@ public class GUI extends Application {
     //Getting screen properties
     private static Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
+    //Image of the model
+    private static ImageView imageView;
 
 
 
-    private TabPane settingTabs() {
+
+    private static TabPane settingTabs() {
 
         TabPane settingsBox = new TabPane();
         settingsBox.setPadding(new Insets(10, 10, 10, 10));
@@ -136,21 +136,41 @@ public class GUI extends Application {
         return settingsBox;
     }
 
-    private GridPane launcherBox(Stage stage) throws IOException {
+    private static GridPane launcherBox(Stage stage) throws IOException {
         GridPane launcher = new GridPane();
         launcher.setHgap(100);
         launcher.setVgap(5);
         launcher.setPadding(new Insets(10, 10, 10, 10));
 
-        InputStream streamRun = getClass().getResourceAsStream("/run.png");
+        InputStream streamRun = GUI.class.getResourceAsStream("/run.png");
         Image runImage = new Image(streamRun);
         Button runButton = new Button("Lancer", new ImageView(runImage));
         runButton.setDefaultButton(true);
 
-        InputStream streamStop = getClass().getResourceAsStream("/stop.png");
+        runButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                /*
+                * DO SOMETHING ON RUN
+                * Supposedly open a new thread where the algorithm runs in the background
+                 */
+            }
+        });
+
+        InputStream streamStop = GUI.class.getResourceAsStream("/stop.png");
         Image stopImage = new Image(streamStop);
         Button stopButton = new Button("Arrêter", new ImageView(stopImage));
         stopButton.setCancelButton(true);
+
+        stopButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                /*
+                * DO SOMETHING ON STOP
+                * Supposedly stop the simulation
+                 */
+            }
+        });
 
         //File filter
         FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("Configuration files (*.json)", "*.json");
@@ -281,8 +301,39 @@ public class GUI extends Application {
         return launcher;
     }
 
-    private static void celluloseModel(Scene scene) {
+    private static StackPane celluloseModel() {
+        StackPane imagePane = new StackPane();
+        imagePane.setPrefWidth(700);
+        imageView = new ImageView();
 
+        InputStream defaultImage = GUI.class.getResourceAsStream("/default.png");
+
+        Image img = new Image(defaultImage);
+        imageView.setImage(img);
+        imagePane.getChildren().add(imageView);
+        imagePane.setAlignment(imageView, Pos.CENTER);
+
+        //Centering the image
+        double w = 0;
+        double h = 0;
+
+        double ratioX = imageView.getFitWidth() / img.getWidth();
+        double ratioY = imageView.getFitHeight() / img.getHeight();
+
+        double reducCoeff = 0;
+        reducCoeff = Math.min(ratioX, ratioY);
+
+        w = img.getWidth() * reducCoeff;
+        h = img.getHeight() * reducCoeff;
+
+        imageView.setX((imageView.getFitWidth() - w) / 2);
+        imageView.setY((imageView.getFitHeight() - h) / 2);
+
+        return imagePane;
+    }
+
+    public static void updateModel(Image img) {
+        imageView.setImage(img);
     }
 
     private static void importSettings(File file) throws IOException{
@@ -361,6 +412,8 @@ public class GUI extends Application {
             }
         });
 
+        BorderPane mainBox  = new BorderPane();
+
         VBox leftSide = new VBox();
 
         TabPane settingsTab = settingTabs();
@@ -372,8 +425,15 @@ public class GUI extends Application {
 
 
 
+        mainBox.setLeft(leftSide);
+
+        StackPane modelPane = celluloseModel();
+        mainBox.setCenter(modelPane);
+
+
+
         //Creating and adding settings to the scene
-        Scene mainScene = new Scene(leftSide);
+        Scene mainScene = new Scene(mainBox);
 
 
 

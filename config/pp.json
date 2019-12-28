@@ -1,0 +1,1 @@
+[{"Simulation":{"timeDelta":69.0,"initialBacteriaAmount":50,"timeDeltaSubdivision":60,"maxDuration":1000.0}},{"Environment":{"halfLength":40.0,"cellsPerSide":250,"substratumRadius":25.0}},{"Cell":{"cMin":0.3,"vDiff":5.0,"cIni":0.4}},{"Bacterium":{"bDiff":1.0,"mIni":0.4,"vCons":0.2,"kConv":0.2,"vd":0.1}}]

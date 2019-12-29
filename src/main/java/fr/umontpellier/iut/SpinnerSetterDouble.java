@@ -37,6 +37,11 @@ public class SpinnerSetterDouble extends SpinnerSetter {
             sliderValue.setText(String.format("%.2f", new_val.floatValue()) + " " +unit);
             //Changes the text color once value is updated
             sliderValue.setTextFill(Color.RED);
+
+            if(new_val.doubleValue()==defaultValue) {
+                sliderValue.setTextFill(Color.BLACK);
+            }
+
             //Also update the spinner
             spinnerFactory.setValue(new_val.doubleValue());
             //Updating class value

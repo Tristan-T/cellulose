@@ -34,6 +34,11 @@ public class SpinnerSetterInteger extends SpinnerSetter {
             sliderValue.setText(String.format("%d", new_val.intValue()) + " " +unit);
             //Changes the text color once value is updated
             sliderValue.setTextFill(Color.RED);
+
+            if(new_val.doubleValue()==defaultValue) {
+                sliderValue.setTextFill(Color.BLACK);
+            }
+
             //Also update the spinner
             spinnerFactory.setValue(new_val.intValue());
             //Updating class value

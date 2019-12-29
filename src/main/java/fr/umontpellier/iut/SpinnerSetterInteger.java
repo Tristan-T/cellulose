@@ -17,8 +17,8 @@ public class SpinnerSetterInteger extends SpinnerSetter {
         //Setting text value
         this.sliderValue.setText(String.format("%d",(int) this.getValue()) + " " +unit);
         //Spinner for more precise tuning
-        spinner = new Spinner<Integer>();
-        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, (int) defaultValue/20);
+        spinner = new Spinner<>();
+        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, (int) Math.ceil(defaultValue/20));
         spinner.setValueFactory(spinnerFactory);
         spinner.setEditable(true);
 
@@ -93,7 +93,7 @@ public class SpinnerSetterInteger extends SpinnerSetter {
         slider.setMajorTickUnit(maxValue / 4);
         slider.setMinorTickCount(5);
 
-        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, (int) defaultValue/20);
+        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, (int) Math.ceil(defaultValue/20));
         spinner.setValueFactory(spinnerFactory);
         spinner.setEditable(true);
 

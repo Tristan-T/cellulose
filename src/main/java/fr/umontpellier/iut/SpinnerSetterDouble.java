@@ -1,13 +1,8 @@
 package fr.umontpellier.iut;
 
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.HPos;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
-import javafx.util.StringConverter;
 
 public class SpinnerSetterDouble extends SpinnerSetter {
     protected Spinner<Double> spinner;

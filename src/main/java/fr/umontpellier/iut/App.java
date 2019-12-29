@@ -22,7 +22,7 @@ public class App {
 //
 //        Settings.exportConfig("settings");
         try {
-            Settings.loadConfig("settings");
+            Settings.loadConfig(System.getProperty("user.dir") + "/config/settings.json");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -59,8 +59,11 @@ public class SpinnerSetterInteger extends SpinnerSetter {
             //Update when current value is superior to max only (as set by the spinner for example)
             if(new_val.intValue()>=slider.getMax())   {
                 slider.setMax(new_val.intValue());
-                slider.setMajorTickUnit((int) new_val / 3);
-                slider.setMinorTickCount((int) new_val / 15);
+                slider.setMajorTickUnit(new_val.intValue() / 4);
+                slider.setMinorTickCount(5);
+            }
+            if(new_val.doubleValue()==defaultValue) {
+                sliderValue.setTextFill(Color.BLACK);
             }
 
             slider.setValue(new_val.intValue());
@@ -78,6 +81,12 @@ public class SpinnerSetterInteger extends SpinnerSetter {
     }
 
     protected void updateValue(double value) {
+        defaultValue = value;
+        maxValue = value*2;
+        slider.setMax(maxValue);
+        slider.setMajorTickUnit(maxValue / 4);
+        slider.setMinorTickCount(5);
+
         value = (int) value;
         slider.setValue(value);
         spinner.getValueFactory().setValue((int) value);

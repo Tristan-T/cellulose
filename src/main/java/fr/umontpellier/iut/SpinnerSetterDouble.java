@@ -62,9 +62,14 @@ public class SpinnerSetterDouble extends SpinnerSetter {
             //Update when current value is superior to max only (as set by the spinner for example)
             if(new_val.doubleValue()>=slider.getMax())   {
                 slider.setMax(new_val.doubleValue());
-                slider.setMajorTickUnit((int) new_val.doubleValue() / 3);
-                slider.setMinorTickCount((int) new_val.doubleValue() / 15);
+                slider.setMajorTickUnit(new_val.doubleValue() / 4);
+                slider.setMinorTickCount(15);
             }
+
+            if(new_val.doubleValue()==defaultValue) {
+                sliderValue.setTextFill(Color.BLACK);
+            }
+
             slider.setValue(new_val.doubleValue());
 
             //Updating class value
@@ -80,6 +85,12 @@ public class SpinnerSetterDouble extends SpinnerSetter {
     }
 
     protected void updateValue(double value) {
+        defaultValue = value;
+        maxValue = value*2.0;
+        slider.setMax(maxValue);
+        slider.setMajorTickUnit(maxValue / 4);
+        slider.setMinorTickCount(5);
+
         slider.setValue(value);
         spinner.getValueFactory().setValue(value);
     }

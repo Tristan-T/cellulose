@@ -11,6 +11,7 @@ import javafx.util.StringConverter;
 
 public class SpinnerSetterDouble extends SpinnerSetter {
     protected Spinner<Double> spinner;
+    SpinnerValueFactory<Double> spinnerFactory;
 
     public SpinnerSetterDouble(String nom, double minValue, double maxValue, double defaultValue, String unit) {
         super(nom, minValue, maxValue, defaultValue, unit);
@@ -20,7 +21,7 @@ public class SpinnerSetterDouble extends SpinnerSetter {
     protected void instantiateSpinner() {
         //Spinner for more precise tuning
         spinner = new Spinner<>();
-        SpinnerValueFactory<Double> spinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minValue, Integer.MAX_VALUE, defaultValue);
+        spinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minValue, Integer.MAX_VALUE, defaultValue, defaultValue/20);
         spinner.setValueFactory(spinnerFactory);
         spinner.setEditable(true);
 
@@ -95,6 +96,10 @@ public class SpinnerSetterDouble extends SpinnerSetter {
         slider.setMax(maxValue);
         slider.setMajorTickUnit(maxValue / 4);
         slider.setMinorTickCount(5);
+
+        spinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(minValue, Integer.MAX_VALUE, defaultValue, defaultValue/20);
+        spinner.setValueFactory(spinnerFactory);
+        spinner.setEditable(true);
 
         slider.setValue(value);
         spinner.getValueFactory().setValue(value);

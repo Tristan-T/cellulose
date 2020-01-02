@@ -1,6 +1,10 @@
 package fr.umontpellier.iut;
 
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -21,7 +25,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 public class GUI extends Application {
@@ -72,6 +78,12 @@ public class GUI extends Application {
     private static Button stopButton;
     private static Button importButton;
     private static Button exportButton;
+
+    //Nom du fichier de log
+    private static String outputFilename;
+
+    //Thread de calcul
+    private static Service<Void> calculateService;
 
 
 
@@ -169,6 +181,8 @@ public class GUI extends Application {
         stopButton.setCancelButton(true);
         //Function triggered by stop
         stopButton.setOnAction((ActionEvent event) -> stopCalculate());
+        //Disable it by default
+        stopButton.setDisable(true);
 
         //File filter
         FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("Configuration files (*.json)", "*.json");
@@ -389,6 +403,14 @@ public class GUI extends Application {
         }
     }
 
+    private static String outputFileNamer() {
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy-HH'h'mm'm'ss's'SSS'ms'") ;
+        outputFilename = "runCellulose-" + dateFormat.format(date) + ".json";
+        System.out.println(outputFilename);
+        return outputFilename;
+    }
+
     private static void calculate() {
         //Properly set all the settings to run the simulation
         setSettingsFromSpinner();
@@ -396,11 +418,71 @@ public class GUI extends Application {
         mainScene.setCursor(Cursor.WAIT);
         //Disable the possibility to change settings mid simulation
         disableAll();
+        stopButton.setDisable(false);
+        //Set the output file name
+        outputFileNamer();
+
+        calculateService = new Service<Void>() {
+
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+
+                    @Override
+                    protected Void call() throws Exception {
+                        final int maxIterations = 5000000;
+                        for (int iterations = 0; iterations < maxIterations; iterations ++) {
+                            if (isCancelled()) {
+                                break;
+                            }
+                            System.out.println(iterations);
+                        }
+                        //Simulation simulation = new Simulation(outputFilename);
+                        //simulation.run();
+                        return null;
+                    }
+                };
+            }
+        };
+
+        //Handle the end cases
+        calculateService.stateProperty().addListener((ObservableValue<? extends Worker.State> observableValue, Worker.State oldValue, Worker.State newValue) -> {
+            switch (newValue) {
+                case FAILED:
+                    Alert taskFailed = new Alert(Alert.AlertType.ERROR);
+                    taskFailed.setTitle("Task error");
+                    taskFailed.setHeaderText("Error : " + calculateService.getException());
+                    taskFailed.setContentText("Task has failed please try again");
+
+                    taskFailed.showAndWait();
+                case CANCELLED:
+                    Alert taskCancelled = new Alert(Alert.AlertType.INFORMATION);
+                    taskCancelled.setTitle("Task cancelled");
+                    taskCancelled.setHeaderText(null);
+                    taskCancelled.setContentText("Task was cancelled by the user");
+
+                    taskCancelled.showAndWait();
+                case SUCCEEDED:
+                    stopCalculate();
+                    Alert taskFinished = new Alert(Alert.AlertType.INFORMATION);
+                    taskFinished.setTitle("Task complete");
+                    taskFinished.setHeaderText(null);
+                    taskFinished.setContentText("Cellulose degradation complete");
+
+                    taskFinished.showAndWait();
+                    break;
+            }
+        });
+        calculateService.restart();
     }
 
     private static void stopCalculate() {
         //Set the cursor back to normal
         mainScene.setCursor(Cursor.DEFAULT);
+        //Disable the stop button
+        stopButton.setDisable(true);
+        //Cancel the calculation
+        calculateService.cancel();
         //Reenable settings change
         enableAll();
     }
@@ -492,6 +574,9 @@ public class GUI extends Application {
 
         StackPane modelPane = celluloseModel();
         mainBox.setCenter(modelPane);
+
+        StackPane graphPane = null;
+        mainBox.setRight(graphPane);
 
 
 

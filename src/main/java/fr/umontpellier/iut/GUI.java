@@ -1,5 +1,6 @@
 package fr.umontpellier.iut;
 
+import javafx.animation.Interpolator;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -17,9 +18,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -27,6 +30,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -418,6 +422,28 @@ public class GUI extends Application {
         return outputFilename;
     }
 
+    public static void createModelImage(double[][] cellData) {
+        Color color = null;
+        int xLength = cellData.length-1;
+        int yLength = cellData[0].length;
+        WritableImage img = new WritableImage(xLength, yLength);
+
+        for(int i = 0; i<cellData.length-1; i++) { //EXCEPT THE LAST ONE
+            for(int j = 0; j<cellData[0].length; j++) {
+                if(cellData[i][j]<cIni.getValue()/3) {
+                        color = Color.WHITE.interpolate(Color.BLUE, cellData[i][j]);
+                } else if(cellData[i][j]<(2.0*cIni.getValue()/3)) {
+                    color = Color.BLUE.interpolate(Color.GREEN, cellData[i][j]);
+                } else {
+                    color = Color.GREEN.interpolate(Color.LIGHTGREY, cellData[i][j]);
+                }
+                img.getPixelWriter().setColor(i, j, color);
+            }
+        }
+
+        GUI.updateModel(img);
+    }
+
     private static void calculate() {
         //Properly set all the settings to run the simulation
         setSettingsFromSpinner();
@@ -437,15 +463,18 @@ public class GUI extends Application {
 
                     @Override
                     protected Void call() throws Exception {
-                        final int maxIterations = 5000000;
+                        /* final int maxIterations = 5000000;
                         for (int iterations = 0; iterations < maxIterations; iterations ++) {
                             if (isCancelled()) {
                                 break;
                             }
                             System.out.println(iterations);
                         }
-                        //Simulation simulation = new Simulation(outputFilename);
-                        //simulation.run();
+
+
+                         */
+                        Simulation simulation = new Simulation(outputFilename);
+                        simulation.run();
                         return null;
                     }
                 };

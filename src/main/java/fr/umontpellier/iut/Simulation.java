@@ -1,10 +1,20 @@
 package fr.umontpellier.iut;
 
+import javafx.animation.Interpolator;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Rectangle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.WritableByteChannel;
 
 public class Simulation {
     private static double timeDelta;
@@ -49,6 +59,8 @@ public class Simulation {
                 //Sout for debugging purposes
                 System.out.println("Total population: " + (bacteriaData.length-1));
                 System.out.println("Total concentration: " + cellData[cellData.length-1][0]);
+
+                GUI.createModelImage(cellData);
 
                 if (cellData[cellData.length-1][0]<=0.0) {
                     break algoend;

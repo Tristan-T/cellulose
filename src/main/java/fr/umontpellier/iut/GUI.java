@@ -85,6 +85,9 @@ public class GUI extends Application {
     //Thread de calcul
     private static Service<Void> calculateService;
 
+    //Should reload for config
+    private static boolean shouldReload = false;
+
 
 
 
@@ -351,6 +354,10 @@ public class GUI extends Application {
     private static void importSettings(File file) throws IOException{
         Settings.loadConfig(file.getAbsolutePath());
 
+        setSpinnerFromSettings();
+    }
+
+    private static void setSpinnerFromSettings() {
         timeDelta.setValue(Settings.getSimulation_timeDelta());
         initialBacteriaAmount.setValue(Settings.getSimulation_initialBacteriaAmount());
         timeDeltaSubdivision.setValue(Settings.getSimulation_timeDeltaSubdivision());
@@ -568,6 +575,9 @@ public class GUI extends Application {
         leftSide.getChildren().add(settingsTab);
         leftSide.getChildren().add(launcherBox);
 
+        if(shouldReload) {
+            setSpinnerFromSettings();
+        }
 
 
         mainBox.setLeft(leftSide);
@@ -592,12 +602,68 @@ public class GUI extends Application {
         stage.show();
     }
 
-    /*
-     * NEEDS A FUNCTION TO COMMIT ALL VALUE INTO SETTINGS ONCE THE RUN BUTTON IS PRESSED
-     */
-
     //Eventuellement des paramètres externes
     public static void main(String[] args) {
-        Application.launch();
+        int argsLength = args.length;
+        if (argsLength==0) {
+            Application.launch();
+        } else if (argsLength==1) {
+            if(args[0].equals("--noGui") || args[0].equals("-ng")) {
+                System.out.println("Launching in noGUI");
+                Simulation simulation = new Simulation(outputFileNamer());
+                simulation.run();
+                System.exit(0);
+            } else {
+                //Means the user should have inputted a file name
+                File tempFile = new File(args[0]);
+                if(tempFile.exists()) {
+                    if (args[0].endsWith(".json")) {
+                        shouldReload = true;
+                        try {
+                            Settings.loadConfig(args[0]);
+                        } catch (IOException e) {
+                            Alert importError = new Alert(Alert.AlertType.ERROR);
+                            importError.setTitle("Import error");
+                            importError.setHeaderText(null);
+                            importError.setContentText("Couldn't import configuration, using default settings");
+
+                            importError.showAndWait();
+                        }
+                        Application.launch();
+                    } else {
+                        Alert importError = new Alert(Alert.AlertType.ERROR);
+                        importError.setTitle("Import error");
+                        importError.setHeaderText(null);
+                        importError.setContentText("Not a JSON file, using default settings");
+
+                        importError.showAndWait();
+                    }
+                } else {
+                    Alert importError = new Alert(Alert.AlertType.ERROR);
+                    importError.setTitle("Import error");
+                    importError.setHeaderText(null);
+                    importError.setContentText("File doesn't exist, using default settings");
+
+                    importError.showAndWait();
+                }
+            }
+        } else if (argsLength==2) {
+            if (args[1].equals("--noGui") || args[1].equals("-ng")) {
+                File tempFile = new File(args[0]);
+                try {
+                    Settings.loadConfig(args[0]);
+                } catch (Exception e) {
+                    System.out.println("Couldn't open or find file");
+                    System.exit(1);
+                }
+                System.out.println("Launching in noGUI");
+                Simulation simulation = new Simulation(outputFileNamer());
+                simulation.run();
+                System.exit(0);
+            } else {
+                System.out.println("Wrong argument : cellulose settingsName <--noGUI or -ng>");
+                System.exit(1);
+            }
+        }
     }
 }

@@ -422,7 +422,7 @@ public class GUI extends Application {
         return outputFilename;
     }
 
-    public static void createModelImage(double[][] cellData) {
+    public static void createModelImage(double[][] cellData, double[][] bacteriaData) {
         Color color = null;
         int xLength = cellData.length-1;
         int yLength = cellData[0].length;
@@ -431,14 +431,18 @@ public class GUI extends Application {
         for(int i = 0; i<cellData.length-1; i++) { //EXCEPT THE LAST ONE
             for(int j = 0; j<cellData[0].length; j++) {
                 if(cellData[i][j]<cIni.getValue()/3) {
-                        color = Color.WHITE.interpolate(Color.BLUE, cellData[i][j]);
+                        color = Color.WHITE.interpolate(Color.BLUE, cellData[i][j]/cIni.getValue());
                 } else if(cellData[i][j]<(2.0*cIni.getValue()/3)) {
-                    color = Color.BLUE.interpolate(Color.GREEN, cellData[i][j]);
+                    color = Color.BLUE.interpolate(Color.GREEN, cellData[i][j]/cIni.getValue());
                 } else {
-                    color = Color.GREEN.interpolate(Color.LIGHTGREY, cellData[i][j]);
+                    color = Color.GREEN.interpolate(Color.LIGHTGREY, cellData[i][j]/cIni.getValue() );
                 }
                 img.getPixelWriter().setColor(i, j, color);
             }
+        }
+
+        for(double[] bacterie : Arrays.copyOfRange(bacteriaData, 0, bacteriaData.length-1)) {
+            img.getPixelWriter().setColor((int) Math.round(bacterie[0]), (int) Math.round(bacterie[1]), Color.RED);
         }
 
         GUI.updateModel(img);

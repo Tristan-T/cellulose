@@ -60,7 +60,7 @@ public class Simulation {
                 System.out.println("Total population: " + (bacteriaData.length-1));
                 System.out.println("Total concentration: " + cellData[cellData.length-1][0]);
 
-                GUI.createModelImage(cellData);
+                GUI.createModelImage(cellData, bacteriaData);
 
                 if (cellData[cellData.length-1][0]<=0.0) {
                     break algoend;

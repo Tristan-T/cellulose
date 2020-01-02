@@ -100,4 +100,13 @@ public class SpinnerSetterDouble extends SpinnerSetter {
         spinner.getValueFactory().setValue(value);
     }
 
+    protected void disable() {
+        spinner.setDisable(true);
+        slider.setDisable(true);
+    }
+
+    protected void enable() {
+        spinner.setDisable(false);
+        slider.setDisable(false);
+    }
 }

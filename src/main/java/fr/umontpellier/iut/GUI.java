@@ -7,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -62,6 +63,17 @@ public class GUI extends Application {
 
     //Image of the model
     private static ImageView imageView;
+
+    //Scene
+    private static Scene mainScene;
+
+    //All the buttons
+    private static Button runButton;
+    private static Button stopButton;
+    private static Button importButton;
+    private static Button exportButton;
+
+
 
 
 
@@ -142,40 +154,26 @@ public class GUI extends Application {
         launcher.setVgap(5);
         launcher.setPadding(new Insets(10, 10, 10, 10));
 
+        //START BUTTON
         InputStream streamRun = GUI.class.getResourceAsStream("/run.png");
         Image runImage = new Image(streamRun);
-        Button runButton = new Button("Lancer", new ImageView(runImage));
+        runButton = new Button("Lancer", new ImageView(runImage));
         runButton.setDefaultButton(true);
+        //Function triggered by start
+        runButton.setOnAction((ActionEvent event) -> calculate());
 
-        runButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                /*
-                * DO SOMETHING ON RUN
-                * Supposedly open a new thread where the algorithm runs in the background
-                 */
-            }
-        });
-
+        //STOP BUTTON
         InputStream streamStop = GUI.class.getResourceAsStream("/stop.png");
         Image stopImage = new Image(streamStop);
-        Button stopButton = new Button("Arrêter", new ImageView(stopImage));
+        stopButton = new Button("Arrêter", new ImageView(stopImage));
         stopButton.setCancelButton(true);
-
-        stopButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                /*
-                * DO SOMETHING ON STOP
-                * Supposedly stop the simulation
-                 */
-            }
-        });
+        //Function triggered by stop
+        stopButton.setOnAction((ActionEvent event) -> stopCalculate());
 
         //File filter
         FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("Configuration files (*.json)", "*.json");
 
-        Button importButton = new Button("Import config");
+        importButton = new Button("Import config");
 
         importButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -243,7 +241,7 @@ public class GUI extends Application {
         });
 
 
-        Button exportButton = new Button("Save configuration");
+        exportButton = new Button("Save configuration");
         exportButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -358,8 +356,9 @@ public class GUI extends Application {
         kConv.setValue(Settings.getBacterium_kConv());
         vd.setValue(Settings.getBacterium_vd());
     }
-    
-    private static void exportSettings(File file) throws IOException{
+
+    //Get the spinner values and set them for the rest of the program
+    private static void setSettingsFromSpinner() {
         Settings.setSimulation_timeDelta(timeDelta.getValue());
         Settings.setSimulation_initialBacteriaAmount((int) initialBacteriaAmount.getValue());
         Settings.setSimulation_timeDeltaSubdivision((int) timeDeltaSubdivision.getValue());
@@ -378,12 +377,76 @@ public class GUI extends Application {
         Settings.setBacterium_vCons(vCons.getValue());
         Settings.setBacterium_kConv(kConv.getValue());
         Settings.setBacterium_vd(vd.getValue());
+    }
+    
+    private static void exportSettings(File file) throws IOException{
+        setSettingsFromSpinner();
 
         try {
             Settings.exportConfig(file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void calculate() {
+        //Properly set all the settings to run the simulation
+        setSettingsFromSpinner();
+        //Change the cursor to loading
+        mainScene.setCursor(Cursor.WAIT);
+        //Disable the possibility to change settings mid simulation
+        disableAll();
+    }
+
+    private static void stopCalculate() {
+        //Set the cursor back to normal
+        mainScene.setCursor(Cursor.DEFAULT);
+        //Reenable settings change
+        enableAll();
+    }
+
+    private static void disableAll() {
+        timeDelta.disable();
+        initialBacteriaAmount.disable();
+        timeDeltaSubdivision.disable();
+        maxDuration.disable();
+        halfLength.disable();
+        cellsPerSide.disable();
+        substratumRadius.disable();
+        cMin.disable();
+        vDiff.disable();
+        cIni.disable();
+        bDiff.disable();
+        mIni.disable();
+        vCons.disable();
+        kConv.disable();
+        vd.disable();
+
+        runButton.setDisable(true);
+        exportButton.setDisable(true);
+        importButton.setDisable(true);
+    }
+
+    private static void enableAll() {
+        timeDelta.enable();
+        initialBacteriaAmount.enable();
+        timeDeltaSubdivision.enable();
+        maxDuration.enable();
+        halfLength.enable();
+        cellsPerSide.enable();
+        substratumRadius.enable();
+        cMin.enable();
+        vDiff.enable();
+        cIni.enable();
+        bDiff.enable();
+        mIni.enable();
+        vCons.enable();
+        kConv.enable();
+        vd.enable();
+
+        runButton.setDisable(false);
+        exportButton.setDisable(false);
+        importButton.setDisable(false);
     }
 
     @Override
@@ -433,7 +496,7 @@ public class GUI extends Application {
 
 
         //Creating and adding settings to the scene
-        Scene mainScene = new Scene(mainBox);
+        mainScene = new Scene(mainBox);
 
 
 

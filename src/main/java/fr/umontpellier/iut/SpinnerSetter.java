@@ -115,4 +115,8 @@ public abstract class SpinnerSetter {
     }
 
     abstract void updateValue(double value);
+
+    abstract void disable();
+
+    abstract void enable();
 }

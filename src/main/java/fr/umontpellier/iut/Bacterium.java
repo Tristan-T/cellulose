@@ -1,5 +1,7 @@
 package fr.umontpellier.iut;
 
+import java.util.Random;
+
 public class Bacterium {
     private static double mIni;
     private static double bDiff;
@@ -30,9 +32,10 @@ public class Bacterium {
         //X(t+delta)=Xt + deltaVX + Bdiff * sqrt(delta) * rand();
         //System.out.println("moving from " + x + " " + y + "...");
         double z = bDiff*Math.sqrt(environment.getTimeDelta());
+        Random random = new Random();
 
         double vx = (vd*(computeConcentrationInDirection("east")-computeConcentrationInDirection("west")))/(2*Cell.getLength());
-        double newx = x + (environment.getTimeDelta()*vx)+z*Math.random()*Math.signum(vx);
+        double newx = x + (environment.getTimeDelta()*vx)+z*random.nextGaussian();
         if(newx<0){
             //if x is negative then wrap its position around the "environment"
             //to prevent the case where x is way too small (less than minus the width of the environment,
@@ -47,7 +50,7 @@ public class Bacterium {
         //VY=vd(Co-Ce)/2H
         //Y(t+delta)=Yt + deltaVY + Bdiff * sqrt(delta) * rand();
         double vy = (vd*(computeConcentrationInDirection("north")+computeConcentrationInDirection("south")))/(2*Cell.getLength());
-        double newy = y + (environment.getTimeDelta()*vy)+z*Math.random()*Math.signum(vy);
+        double newy = y + (environment.getTimeDelta()*vy)+z*random.nextGaussian();
         if(newy<0){
             //if y is negative then wrap its position around the "environment"
             //to prevent the case where x is way too small (less than minus the height of the environment,

@@ -28,10 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 public class GUI extends Application {
 
@@ -440,8 +437,13 @@ public class GUI extends Application {
             }
         }
 
+        double length = Cell.getLength();
+        int cellsPerSide = Settings.getEnvironment_cellsPerSide();
+        double rapport = length%cellsPerSide;
+
         for(double[] bacterie : Arrays.copyOfRange(bacteriaData, 0, bacteriaData.length-1)) {
-            img.getPixelWriter().setColor((int) Math.round(bacterie[0])*3, (int) Math.round(bacterie[1])*3, Color.RED);
+            //Conversion formula in the documentation
+            img.getPixelWriter().setColor((int) (bacterie[0]/rapport), (int) (bacterie[1]/rapport), Color.RED);
         }
 
         GUI.updateModel(img);
@@ -493,7 +495,10 @@ public class GUI extends Application {
                     taskFailed.setHeaderText("Error : " + calculateService.getException());
                     taskFailed.setContentText("Task has failed please try again");
 
+                    calculateService.getException().printStackTrace();
+
                     taskFailed.showAndWait();
+                    break;
                 case CANCELLED:
                     Alert taskCancelled = new Alert(Alert.AlertType.INFORMATION);
                     taskCancelled.setTitle("Task cancelled");
@@ -501,6 +506,7 @@ public class GUI extends Application {
                     taskCancelled.setContentText("Task was cancelled by the user");
 
                     taskCancelled.showAndWait();
+                    break;
                 case SUCCEEDED:
                     stopCalculate();
                     Alert taskFinished = new Alert(Alert.AlertType.INFORMATION);
@@ -607,9 +613,6 @@ public class GUI extends Application {
         leftSide.getChildren().add(settingsTab);
         leftSide.getChildren().add(launcherBox);
 
-        if(shouldReload) {
-            setSpinnerFromSettings();
-        }
 
 
         mainBox.setLeft(leftSide);
@@ -630,6 +633,9 @@ public class GUI extends Application {
         //Adding the scene to the stage
         stage.setScene(mainScene);
 
+        if(shouldReload) {
+            setSpinnerFromSettings();
+        }
 
         stage.show();
     }

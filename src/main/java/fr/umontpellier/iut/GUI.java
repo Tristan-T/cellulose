@@ -1,6 +1,5 @@
 package fr.umontpellier.iut;
 
-import javafx.animation.Interpolator;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -8,12 +7,10 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -27,7 +24,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -442,7 +441,7 @@ public class GUI extends Application {
         }
 
         for(double[] bacterie : Arrays.copyOfRange(bacteriaData, 0, bacteriaData.length-1)) {
-            img.getPixelWriter().setColor((int) Math.round(bacterie[0]), (int) Math.round(bacterie[1]), Color.RED);
+            img.getPixelWriter().setColor((int) Math.round(bacterie[0])*3, (int) Math.round(bacterie[1])*3, Color.RED);
         }
 
         GUI.updateModel(img);

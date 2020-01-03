@@ -29,8 +29,10 @@ public class Bacterium {
         //VX=vd(Co-Ce)/2H
         //X(t+delta)=Xt + deltaVX + Bdiff * sqrt(delta) * rand();
         //System.out.println("moving from " + x + " " + y + "...");
-        double vx = vd*((computeConcentrationInDirection("east")-computeConcentrationInDirection("west")))/(2*Cell.getLength());
-        double newx = x + (environment.getTimeDelta()*vx) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
+        double z = bDiff*Math.sqrt(environment.getTimeDelta());
+
+        double vx = (vd*(computeConcentrationInDirection("east")-computeConcentrationInDirection("west")))/(2*Cell.getLength());
+        double newx = x + (environment.getTimeDelta()*vx)+z*Math.random()*Math.signum(vx);
         if(newx<0){
             //if x is negative then wrap its position around the "environment"
             //to prevent the case where x is way too small (less than minus the width of the environment,
@@ -44,8 +46,8 @@ public class Bacterium {
 
         //VY=vd(Co-Ce)/2H
         //Y(t+delta)=Yt + deltaVY + Bdiff * sqrt(delta) * rand();
-        double vy =vd*((computeConcentrationInDirection("north")-computeConcentrationInDirection("south")))/(2*Cell.getLength());
-        double newy = y + (environment.getTimeDelta()*vy) + bDiff*Math.sqrt(environment.getTimeDelta())*Math.random();
+        double vy = (vd*(computeConcentrationInDirection("north")+computeConcentrationInDirection("south")))/(2*Cell.getLength());
+        double newy = y + (environment.getTimeDelta()*vy)+z*Math.random()*Math.signum(vy);
         if(newy<0){
             //if y is negative then wrap its position around the "environment"
             //to prevent the case where x is way too small (less than minus the height of the environment,

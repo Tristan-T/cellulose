@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 
 public class SpinnerSetterInteger extends SpinnerSetter {
     protected Spinner<Integer> spinner;
-    SpinnerValueFactory<Integer> spinnerFactory;
+    protected SpinnerValueFactory<Integer> spinnerFactory;
 
     public SpinnerSetterInteger(String nom, double minValue, double maxValue, double defaultValue, String unit) {
         super(nom, minValue, maxValue, defaultValue, unit);
@@ -18,7 +18,7 @@ public class SpinnerSetterInteger extends SpinnerSetter {
         this.sliderValue.setText(String.format("%d",(int) this.getValue()) + " " +unit);
         //Spinner for more precise tuning
         spinner = new Spinner<>();
-        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, (int) Math.ceil(defaultValue/20));
+        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, 1);
         spinner.setValueFactory(spinnerFactory);
         spinner.setEditable(true);
 
@@ -93,11 +93,6 @@ public class SpinnerSetterInteger extends SpinnerSetter {
         slider.setMajorTickUnit(maxValue / 4);
         slider.setMinorTickCount(5);
 
-        spinnerFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory((int) minValue, Integer.MAX_VALUE, (int) defaultValue, (int) Math.ceil(defaultValue/20));
-        spinner.setValueFactory(spinnerFactory);
-        spinner.setEditable(true);
-
-        value = (int) value;
         slider.setValue(value);
         spinner.getValueFactory().setValue((int) value);
     }

@@ -1,6 +1,7 @@
 package fr.umontpellier.iut;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -59,7 +60,7 @@ public class GUI extends Application {
     private static SpinnerSetterDouble bDiff = new SpinnerSetterDouble("bDiff", 0, 200, 10, "µm/√h");
     private static SpinnerSetterDouble mIni = new SpinnerSetterDouble("mIni", 0, 200, 10, "pg");
     private static SpinnerSetterDouble vCons = new SpinnerSetterDouble("vCons", 0, 200, 10, "pg/h");
-    private static SpinnerSetterDouble kConv = new SpinnerSetterDouble("kConv", 0, 100, 10, "%"); //Don't forget to divide by 100
+    private static SpinnerSetterDouble kConv = new SpinnerSetterDouble("kConv", 0, 100, 10, "of 1"); //Don't forget to divide by 100
     private static SpinnerSetterDouble vd = new SpinnerSetterDouble("vd", 0, 200, 10, "µm⁴/pgh");
 
 
@@ -87,6 +88,8 @@ public class GUI extends Application {
 
     //Should reload for config
     private static boolean shouldReload = false;
+
+    private static boolean showBacteria = false;
 
 
 
@@ -318,8 +321,10 @@ public class GUI extends Application {
 
     private static StackPane celluloseModel() {
         StackPane imagePane = new StackPane();
-        imagePane.setPrefWidth(700);
         imageView = new ImageView();
+        imageView.setFitHeight(screenBounds.getHeight()/1.6);
+        imageView.setFitWidth(screenBounds.getHeight()/1.6);
+        imageView.setSmooth(false);
 
         InputStream defaultImage = GUI.class.getResourceAsStream("/default.png");
 
@@ -437,15 +442,16 @@ public class GUI extends Application {
             }
         }
 
-        double length = Cell.getLength();
-        int cellsPerSide = Settings.getEnvironment_cellsPerSide();
-        double rapport = length%cellsPerSide;
+        if(showBacteria) {
+            double length = Cell.getLength();
+            int cellsPerSide = Settings.getEnvironment_cellsPerSide();
+            double rapport = length % cellsPerSide;
 
-        for(double[] bacterie : Arrays.copyOfRange(bacteriaData, 0, bacteriaData.length-1)) {
-            //Conversion formula in the documentation
-            img.getPixelWriter().setColor((int) (bacterie[0]/rapport), (int) (bacterie[1]/rapport), Color.RED);
+            for (double[] bacterie : Arrays.copyOfRange(bacteriaData, 0, bacteriaData.length - 1)) {
+                //Conversion formula in the documentation
+                img.getPixelWriter().setColor((int) (bacterie[0] / rapport), (int) (bacterie[1] / rapport), Color.RED);
+            }
         }
-
         GUI.updateModel(img);
     }
 
@@ -611,6 +617,18 @@ public class GUI extends Application {
         launcherBox.setAlignment(Pos.CENTER);
 
         leftSide.getChildren().add(settingsTab);
+
+        CheckBox cbBacteria = new CheckBox("Show bacterias");
+        cbBacteria.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                showBacteria=new_val;
+                System.out.println(new_val);
+            }
+        });
+
+        leftSide.getChildren().add(cbBacteria);
+
         leftSide.getChildren().add(launcherBox);
 
 

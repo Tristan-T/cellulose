@@ -1,23 +1,14 @@
 package fr.umontpellier.iut;
 
-import javafx.animation.Interpolator;
 import javafx.application.Platform;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Rectangle;
+import javafx.concurrent.Task;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.WritableByteChannel;
 
-public class Simulation {
+public class Simulation extends Task<Void> {
     private static double timeDelta;
     private static int timeDeltaSubdivision;
     private static int initialBacteriaAmount;
@@ -38,9 +29,11 @@ public class Simulation {
 
     /**
      * Calls tick() of environment every timeDeltaSubdivision and outputs data every timeDelta
+     * @return
      */
     //Or returns an int which could be the execution code
-    public void run() {
+    @Override
+    public Void call() {
         if(shouldLog) {
             try {
                 outputFile = new FileWriter("./output/" + outputFileName + ".json", true);
@@ -57,6 +50,12 @@ public class Simulation {
             //System.out.println(maxDuration);
             //output data (for rendering and stuff every delta time)
             if (timeLeft<lastFrame-timeDelta){
+
+                if(isCancelled()) {
+                    //If user has requested to cancel, cancel everything
+                    break algoend;
+                }
+
                 long startTime = System.nanoTime();
                 //output data
                 lastFrame=timeLeft;
@@ -94,6 +93,7 @@ public class Simulation {
         }
         //Print the time it took
         System.out.println(maxDuration-timeLeft);
+        return null;
     }
 
     /**

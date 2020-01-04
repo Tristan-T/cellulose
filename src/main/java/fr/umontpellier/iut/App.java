@@ -28,6 +28,6 @@ public class App {
         }
 
         Simulation simulation = new Simulation("outputTestRun");
-        simulation.run();
+        simulation.call();
     }
 }

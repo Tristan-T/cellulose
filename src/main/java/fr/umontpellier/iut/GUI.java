@@ -472,25 +472,7 @@ public class GUI extends Application {
 
             @Override
             protected Task<Void> createTask() {
-                return new Task<Void>() {
-
-                    @Override
-                    protected Void call() throws Exception {
-                        /* final int maxIterations = 5000000;
-                        for (int iterations = 0; iterations < maxIterations; iterations ++) {
-                            if (isCancelled()) {
-                                break;
-                            }
-                            System.out.println(iterations);
-                        }
-
-
-                         */
-                        Simulation simulation = new Simulation(outputFilename);
-                        simulation.run();
-                        return null;
-                    }
-                };
+                return new Simulation(outputFilename);
             }
         };
 
@@ -683,7 +665,7 @@ public class GUI extends Application {
                 Simulation simulation = new Simulation(outputFileNamer());
                 Simulation.setShouldLog(true);
                 Simulation.setHasUI(false);
-                simulation.run();
+                simulation.call();
                 System.exit(0);
             } else {
                 //Means the user should have inputted a file name
@@ -732,7 +714,7 @@ public class GUI extends Application {
                 Simulation simulation = new Simulation(outputFileNamer());
                 Simulation.setShouldLog(true);
                 Simulation.setHasUI(false);
-                simulation.run();
+                simulation.call();
                 System.exit(0);
             } else {
                 System.out.println("Wrong argument : cellulose settingsName <--noGUI or -ng>");

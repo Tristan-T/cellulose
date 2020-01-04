@@ -63,10 +63,6 @@ public class Cell {
 
             //Update the concentration
             concentration = concentration + concentrationDelta;
-            if(Double.isNaN(concentration)||Double.isInfinite(concentration)) {
-                System.out.println("concentrationDelta: " + concentrationDelta);
-                System.exit(0);
-            }
         }
     }
 

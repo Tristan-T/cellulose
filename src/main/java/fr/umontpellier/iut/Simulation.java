@@ -18,7 +18,6 @@ public class Simulation extends Task<Void> {
     private String outputFileName;
     private static boolean shouldLog = false; //By default disabled
     private static boolean hasUI = true;
-    private static boolean wasCancelled = false;
 
     /**
      * Initializes an environment with the correct time settings
@@ -43,11 +42,6 @@ public class Simulation extends Task<Void> {
             }
         }
 
-        if(wasCancelled) {
-            GUI.resetGraph();
-            wasCancelled = false;
-        }
-
         double lastFrame = maxDuration;
         double timeLeft = maxDuration;
         double[][] initialCellData = environment.getCellData();
@@ -65,7 +59,7 @@ public class Simulation extends Task<Void> {
                     break algoend;
                 }
 
-                long startTime = System.nanoTime();
+                //long startTime = System.nanoTime();
                 //output data
                 lastFrame=timeLeft;
                 double[][] bacteriaData = environment.getBacteriaData();
@@ -107,7 +101,7 @@ public class Simulation extends Task<Void> {
                 if (cellData[cellData.length-1][0]<=endThreshold) {
                     break algoend;
                 }
-                long endTime = System.nanoTime();
+                //long endTime = System.nanoTime();
                 //System.out.println("temps d'exec: " + ((endTime - startTime)/1000000));
             }
             environment.tick();
@@ -227,9 +221,5 @@ public class Simulation extends Task<Void> {
 
     public static void setHasUI(boolean hasUI) {
         Simulation.hasUI = hasUI;
-    }
-
-    public static void setWasCancelled(boolean wasCancelled) {
-        Simulation.wasCancelled = wasCancelled;
     }
 }

@@ -480,6 +480,7 @@ public class GUI extends Application {
         stopButton.setDisable(false);
         //Set the output file name
         outputFileNamer();
+        resetGraph();
 
         calculateService = new Service<Void>() {
 
@@ -509,7 +510,6 @@ public class GUI extends Application {
                     taskCancelled.setContentText("Task was cancelled by the user");
 
                     taskCancelled.showAndWait();
-                    Simulation.setWasCancelled(true);
                     break;
                 case SUCCEEDED:
                     stopCalculate();

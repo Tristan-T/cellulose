@@ -15,6 +15,7 @@ public class Graph {
 
     private LineChart<Number, Number> lineChart;
 
+
     public Graph(String title1, String unit1, String title2, String unit2, String color) {
         //defining the axes
         final NumberAxis xAxis = new NumberAxis(); //plot against time
@@ -28,6 +29,8 @@ public class Graph {
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle(title1.substring(0, 1).toUpperCase() + title1.substring(1) + " VS " + title2.substring(0, 1).toUpperCase() + title2.substring(1));
         lineChart.setAnimated(false); // disable animations
+
+        lineChart.setCreateSymbols(false);
 
         //defining a series to display data
         series.setName(title2);

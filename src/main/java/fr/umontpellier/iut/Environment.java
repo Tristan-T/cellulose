@@ -189,6 +189,25 @@ public class Environment {
         return substratumRadius;
     }
 
+    //returns the sum of the mass of the bacteria
+    public double getBiomass(){
+        double sum = 0;
+        for (Bacterium b: bacteria) {
+            sum = sum + b.getMass();
+        }
+        return sum;
+    }
+
+    public double getTotalConcentration(){
+        double sum = 0;
+        for (Cell[] ce: cells) {
+            for (Cell c : ce) {
+                sum = sum + c.getConcentration();
+            }
+        }
+        return sum;
+    }
+
     //SETTERS
     public static void setHalfLength(double halfLength) {
         Environment.halfLength = halfLength;

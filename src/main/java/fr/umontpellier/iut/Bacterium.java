@@ -32,7 +32,7 @@ public class Bacterium {
         neighboringCells=environment.getNeighboringCells(x, y);
         //VX=vd(Co-Ce)/2H
         //X(t+delta)=Xt + deltaVX + Bdiff * sqrt(delta) * rand();
-        //System.out.println("moving from " + x + " " + y + "...");
+
         double z = bDiff*Math.sqrt(environment.getTimeDelta());
 
         double vx = (vd*(computeConcentrationInDirection("east")-computeConcentrationInDirection("west")))/(2*Cell.getLength());
@@ -61,7 +61,6 @@ public class Bacterium {
             //if y is too large then wrap its position around the "environment"
             newy=newy%(Environment.getHalfLength()*2);
         }
-        //System.out.println("...to " + x + " " + y);
 
         //Test if the bacteria ends up in a valid position
         if(environment.getNeighboringCells(newx, newy)[1][1].isSemiLiquid()){

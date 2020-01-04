@@ -50,6 +50,9 @@ public class Simulation extends Task<Void> {
 
         double lastFrame = maxDuration;
         double timeLeft = maxDuration;
+        double[][] initialCellData = environment.getCellData();
+        double endThreshold = initialCellData[initialCellData.length-1][0]*0.10;
+
         algoend:
         while (timeLeft>0) {
             timeLeft-=timeDelta/timeDeltaSubdivision;
@@ -101,16 +104,17 @@ public class Simulation extends Task<Void> {
                     });
                 }
 
-                if (cellData[cellData.length-1][0]<=0.0) {
+                if (cellData[cellData.length-1][0]<=endThreshold) {
                     break algoend;
                 }
                 long endTime = System.nanoTime();
-                System.out.println("temps d'exec: " + ((endTime - startTime)/1000000));
+                //System.out.println("temps d'exec: " + ((endTime - startTime)/1000000));
             }
             environment.tick();
         }
         //Print the time it took
         System.out.println(maxDuration-timeLeft);
+
         return null;
     }
 
@@ -169,6 +173,8 @@ public class Simulation extends Task<Void> {
 
         //Add it to the general JSON object
         fullData.put("CellsData", cellDataJson);
+
+        fullData.put("timeElapsed", timeElapsed);
 
         //Write JSON file in the output folder
         try {

@@ -82,7 +82,8 @@ public class Environment {
      */
     public Cell[][] getNeighboringCells(double x, double y) {
         //Convert to cell coordinates (for the table)
-        //eg: 1-10 is 0 ; 11-20 is 1, etc... is the cell is 10 wide
+        //eg: 1-10 is 0 ; 11-20 is 1, etc... if the cell is 10 wide
+
         //System.out.println("getting neighboring cells of point (x,y)= " + x + " " + y);
         int centerCellX = ((int) (x/Cell.getLength()))%cellsPerSide;
         int centerCellY = ((int) (y/Cell.getLength()))%cellsPerSide;
@@ -113,34 +114,15 @@ public class Environment {
             } else {
                 ypos=centerCellY-1+i;
             }
-//            System.out.println("x="+x1+" y="+ypos);
+            //System.out.println("x="+x1+" y="+ypos);
             neighbors[0][i]=cells[x1][ypos];
-//            System.out.println("x="+centerCellX+" y="+ypos);
+            //System.out.println("x="+centerCellX+" y="+ypos);
             neighbors[1][i]=cells[centerCellX][ypos];
-//            System.out.println("x="+x2+" y="+ypos);
+            //System.out.println("x="+x2+" y="+ypos);
             neighbors[2][i]=cells[x2][ypos];
         }
 
         return neighbors;
-    }
-
-    //returns the sum of the mass of the bacteria
-    public double getBiomass(){
-        double sum = 0;
-        for (Bacterium b: bacteria) {
-            sum = sum + b.getMass();
-        }
-        return sum;
-    }
-
-    public double getTotalConcentration(){
-        double sum = 0;
-        for (Cell[] ce: cells) {
-            for (Cell c : ce) {
-                sum = sum + c.getConcentration();
-            }
-        }
-        return sum;
     }
 
     /**

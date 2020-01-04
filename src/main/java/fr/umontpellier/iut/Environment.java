@@ -133,6 +133,16 @@ public class Environment {
         return sum;
     }
 
+    public double getTotalConcentration(){
+        double sum = 0;
+        for (Cell[] ce: cells) {
+            for (Cell c : ce) {
+                sum = sum + c.getConcentration();
+            }
+        }
+        return sum;
+    }
+
     /**
      * Returns all data about the Bacteria(x, y, mass, total mass) in an Array, the last
      * columns only contains the total mass in the first position

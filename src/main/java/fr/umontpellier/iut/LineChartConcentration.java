@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class LineChartBiomasse extends Application {
+public class LineChartConcentration extends Application {
     private ScheduledExecutorService scheduledExecutorService;
     private XYChart.Series<String, Number> series = new XYChart.Series<>();
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -27,25 +27,23 @@ public class LineChartBiomasse extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Biomasse VS Temps");
+        primaryStage.setTitle("Concentration totale VS Temps");
 
         //defining the axes
         final CategoryAxis xAxis = new CategoryAxis(); //plot against time
         final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Temps (en s)");
         xAxis.setAnimated(false); // axis animations are removed
-        yAxis.setLabel("Biomasse (en mg)");
+        yAxis.setLabel("Concentration totale (en UNITE)");
         yAxis.setAnimated(false); // axis animations are removed
 
         //creating the line chart with two axis created above
         final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Biomasse VS Temps");
+        lineChart.setTitle("Concentration totale VS Temps");
         lineChart.setAnimated(false); // disable animations
 
         //defining a series to display data
-        series.setName("Biomasse");
-
-
+        series.setName("Concentration totale");
 
         // add series to chart
         lineChart.getData().add(series);
@@ -56,9 +54,7 @@ public class LineChartBiomasse extends Application {
 
         // show the stage
         primaryStage.show();
-        series.nodeProperty().get().setStyle("-fx-stroke: #00EE00;");
-
-
+        series.nodeProperty().get().setStyle("-fx-stroke: #A000A0;");
 
         // setup a scheduled executor to periodically put data into the chart
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();

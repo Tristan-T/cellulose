@@ -37,6 +37,15 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:11.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:11.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:11.0.2" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: jfree:jfreechart:1.0.13" level="project" />
+    <orderEntry type="library" name="Maven: jfree:jcommon:1.0.16" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:11.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:11.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:11.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:11.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:11.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:11.0.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.4.0-M1" level="project" />
     <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.4.0-M1" level="project" />

@@ -1,6 +1,7 @@
 package fr.umontpellier.iut;
 
 import javafx.animation.Interpolator;
+import javafx.application.Platform;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -23,17 +24,16 @@ public class Simulation {
     private static double maxDuration;
     private Environment environment;
     private FileWriter outputFile;
+    private String outputFileName;
+    private static boolean shouldLog = false; //By default disabled
+    private static boolean hasUI = true;
 
     /**
      * Initializes an environment with the correct time settings
      */
     public Simulation(String outputFileName) {
         this.environment = new Environment(timeDelta/timeDeltaSubdivision, initialBacteriaAmount);
-        try {
-            outputFile = new FileWriter("./output/"+outputFileName+".json", true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.outputFileName = outputFileName;
     }
 
     /**
@@ -41,6 +41,14 @@ public class Simulation {
      */
     //Or returns an int which could be the execution code
     public void run() {
+        if(shouldLog) {
+            try {
+                outputFile = new FileWriter("./output/" + outputFileName + ".json", true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         double lastFrame = maxDuration;
         double timeLeft = maxDuration;
         algoend:
@@ -49,22 +57,38 @@ public class Simulation {
             //System.out.println(maxDuration);
             //output data (for rendering and stuff every delta time)
             if (timeLeft<lastFrame-timeDelta){
+                long startTime = System.nanoTime();
                 //output data
                 lastFrame=timeLeft;
                 double[][] bacteriaData = environment.getBacteriaData();
                 double[][] cellData = environment.getCellData();
 
-                //outputToFile(cellData, bacteriaData, maxDuration-timeLeft);
+                //Slow down a lot, might want to try writing in RAM
+                if(shouldLog) {
+                    outputToFile(cellData, bacteriaData, maxDuration - timeLeft);
+                }
 
                 //Sout for debugging purposes
-                System.out.println("Total population: " + (bacteriaData.length-1));
-                System.out.println("Total concentration: " + cellData[cellData.length-1][0]);
+                //System.out.println("Total population: " + (bacteriaData.length-1));
+                //System.out.println("Total concentration: " + cellData[cellData.length-1][0]);
 
-                GUI.createModelImage(cellData, bacteriaData);
+
+                //Threading image creation
+                //Would require to check if was drawn before executing but calculation is vastly slower than drawing so not an issue even if we might miss some images
+                if(hasUI) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            GUI.createModelImage(cellData, bacteriaData);
+                        }
+                    });
+                }
 
                 if (cellData[cellData.length-1][0]<=0.0) {
                     break algoend;
                 }
+                long endTime = System.nanoTime();
+                System.out.println("temps d'exec: " + ((endTime - startTime)/1000000));
             }
             environment.tick();
         }
@@ -171,5 +195,13 @@ public class Simulation {
 
     public static void setMaxDuration(double simulationMaxDuration) {
         Simulation.maxDuration = simulationMaxDuration;
+    }
+
+    public static void setShouldLog(boolean shouldLog) {
+        Simulation.shouldLog = shouldLog;
+    }
+
+    public static void setHasUI(boolean hasUI) {
+        Simulation.hasUI = hasUI;
     }
 }

@@ -79,6 +79,7 @@ public class GUI extends Application {
     private static Button stopButton;
     private static Button importButton;
     private static Button exportButton;
+    private static CheckBox cbLog;
 
     //Nom du fichier de log
     private static String outputFilename;
@@ -89,6 +90,7 @@ public class GUI extends Application {
     //Should reload for config
     private static boolean shouldReload = false;
 
+    //Should show bacterias
     private static boolean showBacteria = false;
 
 
@@ -558,6 +560,8 @@ public class GUI extends Application {
         runButton.setDisable(true);
         exportButton.setDisable(true);
         importButton.setDisable(true);
+
+        cbLog.setDisable(true);
     }
 
     private static void enableAll() {
@@ -580,6 +584,8 @@ public class GUI extends Application {
         runButton.setDisable(false);
         exportButton.setDisable(false);
         importButton.setDisable(false);
+
+        cbLog.setDisable(false);
     }
 
     @Override
@@ -618,15 +624,23 @@ public class GUI extends Application {
 
         leftSide.getChildren().add(settingsTab);
 
+        cbLog = new CheckBox("Export the log");
+        cbLog.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                Simulation.setShouldLog(new_val);
+            }
+        });
+
         CheckBox cbBacteria = new CheckBox("Show bacterias");
         cbBacteria.selectedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> ov,
                                 Boolean old_val, Boolean new_val) {
                 showBacteria=new_val;
-                System.out.println(new_val);
             }
         });
 
+        leftSide.getChildren().add(cbLog);
         leftSide.getChildren().add(cbBacteria);
 
         leftSide.getChildren().add(launcherBox);
@@ -667,6 +681,8 @@ public class GUI extends Application {
             if(args[0].equals("--noGui") || args[0].equals("-ng")) {
                 System.out.println("Launching in noGUI");
                 Simulation simulation = new Simulation(outputFileNamer());
+                Simulation.setShouldLog(true);
+                Simulation.setHasUI(false);
                 simulation.run();
                 System.exit(0);
             } else {
@@ -714,6 +730,8 @@ public class GUI extends Application {
                 }
                 System.out.println("Launching in noGUI");
                 Simulation simulation = new Simulation(outputFileNamer());
+                Simulation.setShouldLog(true);
+                Simulation.setHasUI(false);
                 simulation.run();
                 System.exit(0);
             } else {

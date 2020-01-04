@@ -34,7 +34,7 @@ public class LineChartConcentration extends Application {
         final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Temps (en s)");
         xAxis.setAnimated(false); // axis animations are removed
-        yAxis.setLabel("Concentration totale (en UNITE)");
+        yAxis.setLabel("Concentration totale (pg)");
         yAxis.setAnimated(false); // axis animations are removed
 
         //creating the line chart with two axis created above

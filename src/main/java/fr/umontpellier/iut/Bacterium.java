@@ -14,6 +14,8 @@ public class Bacterium {
     private Environment environment;
     private Cell[][] neighboringCells;
 
+    private static Random random = new Random();
+
     public Bacterium(double x, double y, Environment environment) {
         this.x = x;
         this.y = y;
@@ -32,7 +34,6 @@ public class Bacterium {
         //X(t+delta)=Xt + deltaVX + Bdiff * sqrt(delta) * rand();
         //System.out.println("moving from " + x + " " + y + "...");
         double z = bDiff*Math.sqrt(environment.getTimeDelta());
-        Random random = new Random();
 
         double vx = (vd*(computeConcentrationInDirection("east")-computeConcentrationInDirection("west")))/(2*Cell.getLength());
         double newx = x + (environment.getTimeDelta()*vx)+z*random.nextGaussian();

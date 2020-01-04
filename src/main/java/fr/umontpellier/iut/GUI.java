@@ -460,9 +460,9 @@ public class GUI extends Application {
         GUI.updateModel(img);
     }
 
-    public static void updateGraph(double biomasse, double concentration) {
-        graphBiomasse.update(biomasse);
-        graphConcentration.update(concentration);
+    public static void updateGraph(double temps, double biomasse, double concentration) {
+        graphBiomasse.update(temps, biomasse);
+        graphConcentration.update(temps, concentration);
     }
 
     public static void resetGraph() {

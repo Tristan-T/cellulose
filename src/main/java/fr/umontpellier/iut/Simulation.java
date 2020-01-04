@@ -89,11 +89,14 @@ public class Simulation extends Task<Void> {
                         }
                     });
 
+                    //Actual time for plotting
+                    double actualTime = Settings.getSimulation_maxDuration()-timeLeft;
+
                     //Update graphs
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            GUI.updateGraph(environment.getBiomass(), environment.getTotalConcentration());
+                            GUI.updateGraph(actualTime, environment.getBiomass(), environment.getTotalConcentration());
                         }
                     });
                 }

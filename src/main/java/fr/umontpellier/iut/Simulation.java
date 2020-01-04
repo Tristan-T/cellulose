@@ -18,6 +18,7 @@ public class Simulation extends Task<Void> {
     private String outputFileName;
     private static boolean shouldLog = false; //By default disabled
     private static boolean hasUI = true;
+    private static boolean wasCancelled = false;
 
     /**
      * Initializes an environment with the correct time settings
@@ -40,6 +41,11 @@ public class Simulation extends Task<Void> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(wasCancelled) {
+            GUI.resetGraph();
+            wasCancelled = false;
         }
 
         double lastFrame = maxDuration;
@@ -75,10 +81,19 @@ public class Simulation extends Task<Void> {
                 //Threading image creation
                 //Would require to check if was drawn before executing but calculation is vastly slower than drawing so not an issue even if we might miss some images
                 if(hasUI) {
+                    //Update model
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             GUI.createModelImage(cellData, bacteriaData);
+                        }
+                    });
+
+                    //Update graphs
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            GUI.updateGraph(environment.getBiomass(), environment.getTotalConcentration());
                         }
                     });
                 }
@@ -203,5 +218,9 @@ public class Simulation extends Task<Void> {
 
     public static void setHasUI(boolean hasUI) {
         Simulation.hasUI = hasUI;
+    }
+
+    public static void setWasCancelled(boolean wasCancelled) {
+        Simulation.wasCancelled = wasCancelled;
     }
 }

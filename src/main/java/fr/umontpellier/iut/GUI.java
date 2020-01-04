@@ -93,10 +93,13 @@ public class GUI extends Application {
     //Should show bacterias
     private static boolean showBacteria = false;
 
+    private static Graph graphBiomasse;
+    private static Graph graphConcentration;
 
 
-
-
+    public static Rectangle2D getScreenBounds() {
+        return screenBounds;
+    }
 
     private static TabPane settingTabs() {
 
@@ -457,6 +460,16 @@ public class GUI extends Application {
         GUI.updateModel(img);
     }
 
+    public static void updateGraph(double biomasse, double concentration) {
+        graphBiomasse.update(biomasse);
+        graphConcentration.update(concentration);
+    }
+
+    public static void resetGraph() {
+        graphBiomasse.reset();
+        graphConcentration.reset();
+    }
+
     private static void calculate() {
         //Properly set all the settings to run the simulation
         setSettingsFromSpinner();
@@ -496,6 +509,7 @@ public class GUI extends Application {
                     taskCancelled.setContentText("Task was cancelled by the user");
 
                     taskCancelled.showAndWait();
+                    Simulation.setWasCancelled(true);
                     break;
                 case SUCCEEDED:
                     stopCalculate();
@@ -581,7 +595,7 @@ public class GUI extends Application {
         stage.getIcons().add(image);
 
         //Setting window size
-        stage.setX(screenBounds.getWidth()/16);
+        stage.setX(screenBounds.getWidth()/64);
         stage.setY(screenBounds.getHeight()/16);
         stage.setMaxWidth(screenBounds.getWidth());
         stage.setMaxHeight(screenBounds.getHeight());
@@ -622,8 +636,13 @@ public class GUI extends Application {
             }
         });
 
-        leftSide.getChildren().add(cbLog);
-        leftSide.getChildren().add(cbBacteria);
+        VBox checkboxes = new VBox();
+        checkboxes.getChildren().add(cbLog);
+        checkboxes.getChildren().add(cbBacteria);
+        checkboxes.setPadding(new Insets(10, 0, 10, 10));
+        checkboxes.setSpacing(3);
+
+        leftSide.getChildren().add(checkboxes);
 
         leftSide.getChildren().add(launcherBox);
 
@@ -632,9 +651,25 @@ public class GUI extends Application {
         mainBox.setLeft(leftSide);
 
         StackPane modelPane = celluloseModel();
+        modelPane.setMaxWidth(screenBounds.getWidth()/5);
         mainBox.setCenter(modelPane);
 
-        StackPane graphPane = null;
+        //Adding graphs
+        graphBiomasse = new Graph("temps", "s", "biomasse", "mg", "#00EE00");
+        graphConcentration = new Graph("temps", "s", "concentration totale", "pg", "#A000A0;");
+
+        graphBiomasse.getLineChart().prefHeight(screenBounds.getHeight()/3);
+        graphConcentration.getLineChart().prefHeight(screenBounds.getHeight()/3);
+        graphBiomasse.getLineChart().prefWidth(screenBounds.getWidth()/4);
+        graphConcentration.getLineChart().prefWidth(screenBounds.getWidth()/4);
+
+
+        VBox graphPane = new VBox();
+        graphPane.minWidth(screenBounds.getWidth()/2);
+
+        graphPane.getChildren().add(graphBiomasse.getLineChart());
+        graphPane.getChildren().add(graphConcentration.getLineChart());
+
         mainBox.setRight(graphPane);
 
 

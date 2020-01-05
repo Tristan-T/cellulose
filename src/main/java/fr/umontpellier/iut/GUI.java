@@ -180,7 +180,7 @@ public class GUI extends Application {
         //START BUTTON
         InputStream streamRun = GUI.class.getResourceAsStream("/run.png");
         Image runImage = new Image(streamRun);
-        runButton = new Button("Lancer", new ImageView(runImage));
+        runButton = new Button("Run", new ImageView(runImage));
         runButton.setDefaultButton(true);
         //Function triggered by start
         runButton.setOnAction((ActionEvent event) -> calculate());
@@ -188,7 +188,7 @@ public class GUI extends Application {
         //STOP BUTTON
         InputStream streamStop = GUI.class.getResourceAsStream("/stop.png");
         Image stopImage = new Image(streamStop);
-        stopButton = new Button("Arrêter", new ImageView(stopImage));
+        stopButton = new Button("Stop", new ImageView(stopImage));
         stopButton.setCancelButton(true);
         //Function triggered by stop
         stopButton.setOnAction((ActionEvent event) -> stopCalculate());
@@ -424,7 +424,7 @@ public class GUI extends Application {
     private static String outputFileNamer() {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy-HH'h'mm'm'ss's'SSS'ms'") ;
-        outputFilename = "runCellulose-" + dateFormat.format(date) + ".json";
+        outputFilename = "runCellulose-" + dateFormat.format(date);
         System.out.println(outputFilename);
         return outputFilename;
     }

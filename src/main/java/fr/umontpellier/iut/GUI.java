@@ -198,7 +198,7 @@ public class GUI extends Application {
         //File filter
         FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("Configuration files (*.json)", "*.json");
 
-        importButton = new Button("Import config");
+        importButton = new Button("Import configuration");
 
         importButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

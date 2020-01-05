@@ -698,10 +698,8 @@ public class GUI extends Application {
         } else if (argsLength==1) {
             if(args[0].equals("--noGui") || args[0].equals("-ng")) {
                 System.out.println("Launching in noGUI");
-                Simulation simulation = new Simulation(outputFileNamer());
-                Simulation.setShouldLog(true);
-                Simulation.setHasUI(false);
-                simulation.call();
+                System.out.println("Please also input a configuration file");
+                System.out.println("Program will now close...");
                 System.exit(0);
             } else {
                 //Means the user should have inputted a file name

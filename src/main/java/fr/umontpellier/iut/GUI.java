@@ -327,6 +327,7 @@ public class GUI extends Application {
     private static StackPane celluloseModel() {
         StackPane imagePane = new StackPane();
         imageView = new ImageView();
+        //Resize the view to fit but is very blurry
         imageView.setFitHeight(screenBounds.getHeight()/1.6);
         imageView.setFitWidth(screenBounds.getHeight()/1.6);
         imageView.setSmooth(false);
@@ -597,7 +598,7 @@ public class GUI extends Application {
         //Setting window size
         stage.setX(screenBounds.getWidth()/64);
         stage.setY(screenBounds.getHeight()/16);
-        stage.setMaxWidth(screenBounds.getWidth());
+        stage.setMaxWidth(Integer.MAX_VALUE);
         stage.setMaxHeight(screenBounds.getHeight());
         stage.setMinHeight(screenBounds.getHeight()/4);
         stage.setMinWidth(screenBounds.getWidth()/4);

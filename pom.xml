@@ -37,12 +37,6 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.4.0-M1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
-        <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.0.13</version>
-        </dependency>
     </dependencies>
 
 
@@ -59,9 +53,9 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.3</version>
                 <configuration>
-                    <mainClass>fr.umontpellier.iut.App</mainClass>
+                    <mainClass>fr.umontpellier.iut.GUI</mainClass>
                 </configuration>
             </plugin>
         </plugins>

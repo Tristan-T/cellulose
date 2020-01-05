@@ -45,7 +45,8 @@ public class Simulation extends Task<Void> {
         double lastFrame = maxDuration;
         double timeLeft = maxDuration;
         double[][] initialCellData = environment.getCellData();
-        double endThreshold = initialCellData[initialCellData.length-1][0]*0.10;
+        //By default end the simulation when 1% of the cellulose is left
+        double endThreshold = initialCellData[initialCellData.length-1][0]*0.01;
 
         algoend:
         while (timeLeft>0) {

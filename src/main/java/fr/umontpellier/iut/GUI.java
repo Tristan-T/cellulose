@@ -692,8 +692,7 @@ public class GUI extends Application {
     }
 
     //Eventuellement des paramètres externes
-    public static void start(String[] args) {
-        Application.launch();
+    public static void main(String[] args) {
         int argsLength = args.length;
         if (argsLength==0) {
             Application.launch();

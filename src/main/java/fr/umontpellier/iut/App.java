@@ -13,6 +13,6 @@ public class App {
             }
         };
         Platform.startup(runnable);
-        GUI.start(args);
+        GUI.main(args);
     }
 }

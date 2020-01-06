@@ -5,6 +5,7 @@ import javafx.concurrent.Task;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -36,7 +37,13 @@ public class Simulation extends Task<Void> {
     public Void call() {
         if(shouldLog) {
             try {
-                outputFile = new FileWriter("./output/" + outputFileName + ".json", true);
+                File directory = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "output" );
+                if (! directory.exists()){
+                    directory.mkdir();
+                    // If you require it to make the entire directory path including parents,
+                    // use directory.mkdirs(); here instead.
+                }
+                outputFile = new FileWriter(System.getProperty("user.dir") + System.getProperty("file.separator") + "output" + System.getProperty("file.separator") + outputFileName + ".json", true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

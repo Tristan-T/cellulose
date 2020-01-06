@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -691,7 +692,8 @@ public class GUI extends Application {
     }
 
     //Eventuellement des paramètres externes
-    public static void main(String[] args) {
+    public static void start(String[] args) {
+        Application.launch();
         int argsLength = args.length;
         if (argsLength==0) {
             Application.launch();
